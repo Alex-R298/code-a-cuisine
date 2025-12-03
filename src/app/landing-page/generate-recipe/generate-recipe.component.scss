@@ -1,0 +1,120 @@
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Quicksand", sans-serif;
+}
+
+.generate-recipe-container {
+    margin-top: 16rem;
+    text-align: center;
+    color: #1E5515;
+
+    h1 {
+        font-size: 54px;
+        font-weight: 600;
+        margin-bottom: 32px;
+        font-family: "Quicksand", sans-serif;
+    }
+
+    p {
+        font-size: 24px;
+        margin-bottom: 48px;
+        line-height: 1.5;
+        font-family: "Quicksand", sans-serif;
+    }
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 48px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    background-color: #3960394D;
+    border-radius: 20px;
+    padding: 16px;
+}
+
+.input-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    span {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1E5515;
+        font-family: "Quicksand", sans-serif;
+    }
+
+    input {
+        padding: 12px;
+        font-size: 16px;
+        border: 0px;
+        border-radius: 20px;
+        width: 300px;
+        height: 36px;
+        background-color: #FAF0E6CC;
+    }
+}
+
+.serving-inputs {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    input {
+        padding: 12px;
+        font-size: 16px;
+        border: 20px;
+        border-radius: 20px;
+        font-family: "Quicksand", sans-serif;
+        width: 61px;
+        height: 36px;
+    }
+    
+    select {
+        padding: 4px;
+        font-size: 16px;
+        border: 0px;
+        border-radius: 20px;
+        width: 72px;
+        height: 36px;
+        font-family: "Quicksand", sans-serif;
+        background-color: #FAF0E6CC;
+    }
+    button {
+        padding: 8px;
+        background-color: transparent;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        img {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+
+.ingredients-list {
+    background-color: #3960394D;
+    width: 478px;
+    height: 209px;
+    border-radius: 20px;
+    padding: 16px;
+
+    span {
+        font-size: 20px;
+        color: #1E5515;
+        font-weight: 600;
+        font-family: "Quicksand", sans-serif;
+    }
+}

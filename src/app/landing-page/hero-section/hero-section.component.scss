@@ -1,0 +1,110 @@
+section {
+    min-height: 100vh;
+    margin: 0;
+    background-color: #396039;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-section-container {
+    width: 100%;
+    max-width: 1440px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.text-content {
+    color: #FAF0E6;
+    margin-top: 16rem;
+
+    h2 {
+        font-size: 48px;
+        font-weight: 600;
+    }
+
+    h1 {
+        font-size: 104px;
+        font-weight: 700;
+    }
+
+    button {
+        margin-top: 64px;
+        width: 183px;
+        height: 60px;
+        background-color: #FAF0E6;
+        color: #396039;
+        font-size: 24px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+
+        &:hover {
+            background-color: #e0d3c3;
+            transform: scale(1.05);
+        }
+    }
+
+    div {
+        margin-top: 18rem;
+        display: flex;
+        gap: 16px;
+
+        h3 {
+            font-size: 32px;
+            font-weight: 500;
+        }
+
+        a {
+            font-family: 'Ubuntu Light', sans-serif;
+            color: #FAF0E6;
+            text-decoration: none;
+            font-size: 20px;
+            cursor: pointer;
+            align-items: center;
+            display: flex;
+            gap: 14px;
+            transition: color 0.2s;
+
+            &:hover {
+                color: #e0d3c3;
+
+                img {
+                    filter: brightness(0) saturate(100%) invert(88%) sepia(13%) saturate(370%) hue-rotate(327deg) brightness(98%) contrast(90%);
+                }
+            }
+        }
+    }
+}
+
+.image-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    height: 600px;
+
+    img {
+        width: 470px;
+        height: auto;
+        position: absolute;
+        right: 0;
+
+        &:nth-child(1) {
+            top: 0;
+            z-index: 1;
+        }
+
+        &:nth-child(2) {
+            top: 18rem;
+            z-index: 2;
+        }
+
+        &:nth-child(3) {
+            top: 36rem;
+            z-index: 3;
+        }
+    }
+}
