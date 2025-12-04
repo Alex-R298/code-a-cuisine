@@ -1,33 +1,63 @@
 <section>
     <div class="generate-recipe-container">
-    <h1>Generate recipe</h1>
-    <p>Got random stuff in your kitchen? Pop it in—we’ve got the perfect recipe waiting.</p>
+        <h1>Generate recipe</h1>
+        <p>Got random stuff in your kitchen? Pop it in—we've got the perfect recipe waiting.</p>
     </div>
     
     <div class="content-wrapper">
         <div class="input-container">
-        <label for="" class="input-label">
-            <span>Ingredient</span>
-            <input type="text">
-        </label>
+            <label for="" class="input-label">
+                <span>Ingredient</span>
+                <div class="autocomplete-wrapper">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="ingredientInput"
+                        (input)="onIngredientInput($event)"
+                        (blur)="closeSuggestions()"
+                        placeholder="Type ingredient...">
+                    
+                    <!-- Suggestions Dropdown -->
+                    <div class="suggestions-dropdown" *ngIf="showSuggestions">
+                        <div 
+                            class="suggestion-item" 
+                            *ngFor="let suggestion of suggestions"
+                            (click)="selectSuggestion(suggestion)">
+                            {{ suggestion }}
+                        </div>
+                    </div>
+                </div>
+            </label>
 
-        <label for="" class="input-label">
-            <span>Serving size</span>
-            <div class="serving-inputs">
-                <input type="text" placeholder="100">
-                <select name="" id="">
-                    <option value="piece">gram</option>
-                    <option value="ml">ml</option>
-                    <option value="gram">piece</option>
-                </select>
-                <button><img src="../../../assets/img/add_2.png" alt=""></button>
-            </div>
-        </label>
-    </div>
+            <label for="" class="input-label">
+                <span>Serving size</span>
+                <div class="serving-inputs">
+                    <input type="text" placeholder="100">
+                    <div class="custom-dropdown">
+                        <div class="dropdown-selected" (click)="toggleDropdown()">
+                            {{ selectedUnit }}
+                            <span class="dropdown-arrow" [class.open]="isDropdownOpen">
+                                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 1L5 5L9 1" stroke="#1E5515" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="dropdown-options" *ngIf="isDropdownOpen">
+                            <div 
+                                class="dropdown-option" 
+                                *ngFor="let unit of units"
+                                (click)="selectUnit(unit)"
+                                [class.selected]="unit === selectedUnit">
+                                {{ unit }}
+                            </div>
+                        </div>
+                    </div>
+                    <button><img src="../../../assets/img/add_2.png" alt=""></button>
+                </div>
+            </label>
+        </div>
 
-    <div class="ingredients-list">
-        <span>List of your Ingredients</span>
+        <div class="ingredients-list">
+            <span>List of your Ingredients</span>
+        </div>
     </div>
-    </div>
-
 </section>
