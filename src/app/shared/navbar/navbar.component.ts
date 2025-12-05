@@ -12,12 +12,14 @@ import { filter } from 'rxjs/operators';
 })
 export class NavbarComponent {
   isGenerateRecipePage = false;
+  isPerferencesPage = false;
 
   constructor(private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.isGenerateRecipePage = this.router.url.includes('/generate-recipe');
+      this.isPerferencesPage = this.router.url.includes('/perferences');
     });
   }
 }

@@ -31,6 +31,7 @@ section {
     gap: 48px;
     margin: 0 auto;
     justify-content: center;
+    align-items: flex-start;
 }
 
 .input-container {
@@ -40,6 +41,9 @@ section {
     background-color: #3960394D;
     border-radius: 20px;
     padding: 16px;
+    overflow: visible;
+    align-self: flex-start;
+    height: 209px;
 }
 
 .input-label {
@@ -70,50 +74,74 @@ section {
     }
 }
 
-// NEU: Autocomplete Wrapper
+// Autocomplete Wrapper
 .autocomplete-wrapper {
     position: relative;
-    width: 100%;
 }
 
-// NEU: Suggestions Dropdown
+// Suggestions Dropdown
 .suggestions-dropdown {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 100%;
-    background-color: #FAF0E6;
-    border-radius: 12px;
-    margin-top: 4px;
-    box-shadow: 0 4px 12px rgba(30, 85, 21, 0.15);
     z-index: 100;
     max-height: 200px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    // Smooth Animation
+    animation: slideDown 0.2s ease-out;
+    opacity: 1;
 }
 
-// NEU: Suggestion Items
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Suggestion Items
 .suggestion-item {
-    padding: 12px 16px;
+    padding: 4px 8px;
     font-size: 16px;
     font-family: "Quicksand", sans-serif;
     color: #1E5515;
     cursor: pointer;
+    margin-left: 10px;
+    margin-top: 4px;
+    border-radius: 20px;
     transition: background-color 0.2s;
-
-    &:first-child {
-        border-radius: 12px 12px 0 0;
-    }
-
-    &:last-child {
-        border-radius: 0 0 12px 12px;
-    }
-
-    &:only-child {
-        border-radius: 12px;
-    }
+    display: inline-block;
+    white-space: nowrap;
+    
+    // Items erscheinen nacheinander
+    animation: fadeIn 0.3s ease-out forwards;
+    opacity: 0;
+    
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 0.05s; }
+    &:nth-child(3) { animation-delay: 0.1s; }
 
     &:hover {
-        background-color: #3960394D;
+        background-color: #FAF0E6CC;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
@@ -132,10 +160,22 @@ section {
         height: 36px;
         text-align: center;
         outline: none;
+        transition: box-shadow 0.2s ease;
 
         &:focus {
             outline: none;
         }
+
+        &.invalid {
+            box-shadow: 0 0 0 2px #ff4444;
+            animation: shake 0.3s ease;
+        }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
     }
     
     select {
@@ -211,6 +251,18 @@ section {
         border-radius: 20px;
         margin-top: 4px;
         z-index: 10;
+        animation: dropdownFadeIn 0.2s ease-out;
+    }
+
+    @keyframes dropdownFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .dropdown-option {
@@ -223,6 +275,12 @@ section {
         text-align: center;
         transition: background-color 0.2s;
         margin-top: 4px;
+        animation: optionSlideIn 0.2s ease-out forwards;
+        opacity: 0;
+
+        &:nth-child(1) { animation-delay: 0s; }
+        &:nth-child(2) { animation-delay: 0.05s; }
+        &:nth-child(3) { animation-delay: 0.1s; }
 
         &:hover {
             background-color: #FAF0E6CC;
@@ -230,6 +288,17 @@ section {
 
         &.selected {
             background-color: #FAF0E6CC;
+        }
+    }
+
+    @keyframes optionSlideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
         }
     }
 
@@ -253,17 +322,352 @@ section {
     }
 }
 
+.ingredients-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .ingredients-list {
     background-color: #3960394D;
     width: 478px;
-    height: 209px;
+    min-height: 209px;
     border-radius: 20px;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 
-    span {
+    > span {
         font-size: 20px;
         color: #1E5515;
         font-weight: 600;
         font-family: "Quicksand", sans-serif;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    li {
+        animation: slideInFromLeft 0.3s ease-out;
+        transition: margin-bottom 0.3s ease;
+        
+        // NEU: Wenn Dropdown offen ist, füge Platz hinzu
+        &:has(.ingredient-editing .dropdown-options-edit) {
+            margin-bottom: 100px;
+        }
+        
+        // NEU: Delete Animation
+        &.deleting {
+            animation: slideOutToRight 0.3s ease-out forwards;
+        }
+        
+        &:hover:not(:has(.ingredient-editing)) {
+            background-color: #FAF0E6CC;
+            border-radius: 12px;
+        }
+    }
+
+    @keyframes slideInFromLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    // NEU: Slide-Out Animation für Delete
+    @keyframes slideOutToRight {
+        0% {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+        50% {
+            transform: translateX(10px) scale(0.95);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(30px) scale(0.9);
+        }
+    }
+
+    // NORMAL VIEW
+    .ingredient-normal {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        
+        .ingredient-text {
+            font-size: 18px;
+            font-weight: 400;
+            font-family: "Quicksand", sans-serif;
+            color: #1E5515;
+        }
+
+        .ingredient-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+    }
+
+    li:hover .ingredient-normal .ingredient-actions {
+        opacity: 1;
+    }
+
+    // EDIT VIEW
+    .ingredient-editing {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        animation: expandEdit 0.2s ease-out;
+        flex-wrap: wrap;
+        position: relative;
+        transition: all 0.3s ease;
+
+        .bullet {
+            font-size: 18px;
+            color: #1E5515;
+        }
+
+        .edit-amount {
+            width: 60px;
+            padding: 12px;
+            font-size: 16px;
+            border: 0px;
+            border-radius: 20px;
+            background-color: #FAF0E6CC;
+            text-align: center;
+            font-family: "Quicksand", sans-serif;
+            color: #1E5515;
+            outline: none;
+            height: 36px;
+            animation: scaleIn 0.2s ease-out;
+            transition: box-shadow 0.2s ease;
+
+            &:focus {
+                outline: none;
+            }
+
+            &.invalid {
+                box-shadow: 0 0 0 2px #ff4444;
+                animation: shake 0.3s ease;
+            }
+        }
+
+        .custom-dropdown-edit {
+            position: relative;
+            width: 72px;
+            animation: scaleIn 0.2s ease-out 0.05s both;
+        }
+
+        .dropdown-selected-edit {
+            padding: 4px 8px;
+            font-size: 16px;
+            border: 0px;
+            border-radius: 20px;
+            background-color: #FAF0E6CC;
+            cursor: pointer;
+            font-family: "Quicksand", sans-serif;
+            text-align: center;
+            user-select: none;
+            width: 72px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: #FAF0E6CC;
+            }
+
+            .dropdown-arrow {
+                transition: transform 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                svg {
+                    width: 10px;
+                    height: 6px;
+                }
+
+                &.open {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        .dropdown-options-edit {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: transparent;
+            border-radius: 20px;
+            margin-top: 4px;
+            z-index: 1000;
+            animation: dropdownSlide 0.2s ease-out;
+        }
+
+        @keyframes dropdownSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-option-edit {
+            padding: 2px 6px;
+            font-size: 16px;
+            font-family: "Quicksand", sans-serif;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 20px;
+            text-align: center;
+            transition: background-color 0.2s;
+            margin-top: 4px;
+            animation: optionSlideInEdit 0.2s ease-out forwards;
+            opacity: 0;
+
+            &:nth-child(1) { animation-delay: 0s; }
+            &:nth-child(2) { animation-delay: 0.05s; }
+            &:nth-child(3) { animation-delay: 0.1s; }
+
+            &:hover {
+                background-color: #FAF0E6CC;
+            }
+
+            &.selected {
+                background-color: #FAF0E6CC;
+            }
+        }
+
+        @keyframes optionSlideInEdit {
+            from {
+                opacity: 0;
+                transform: translateX(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .ingredient-name {
+            flex: 1;
+            font-size: 18px;
+            font-family: "Quicksand", sans-serif;
+            color: #1E5515;
+        }
+
+        .ingredient-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 1;
+            animation: fadeInButtons 0.3s ease-out 0.1s both;
+        }
+    }
+
+    @keyframes expandEdit {
+        from {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes fadeInButtons {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    button {
+        padding: 4px;
+        background-color: transparent;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
+
+        &:hover {
+            background-color: #3960394D;
+        }
+    }
+}
+
+// Next Step Button (außerhalb von ingredients-list)
+.next-bttn {
+    margin-top: 24px;
+    animation: slideInFromBottom 0.3s ease-out;
+
+    button {
+        width: 183px;
+        height: 60px;
+        background-color: #396039;
+        color: #FAF0E6;
+        font-size: 24px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-family: "Quicksand", sans-serif;
+
+        &:hover {
+            background-color: #3a723a;
+        }
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
