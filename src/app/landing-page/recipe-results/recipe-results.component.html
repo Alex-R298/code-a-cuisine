@@ -15,10 +15,8 @@
   <!-- Recipe Overview -->
   <div *ngIf="!loading && !error && recipes.length > 0" class="recipes-overview">
     <!-- Header -->
+     <div class="overview-header">
     <div class="header">
-      <div class="logo">
-        <img src="assets/logo.svg" alt="Code à Cuisine">
-      </div>
       
       <h1>The recipe results</h1>
       <p class="subtitle">
@@ -31,12 +29,17 @@
         <span class="tag">{{ cookingTime }}</span>
       </div>
     </div>
+    <div class="logo">
+        <img src="../../../assets/img/ai-chef.png" alt="Code à Cuisine">
+      </div>
+
+    </div>
 
     <!-- Recipe Cards -->
     <div class="recipe-cards">
       <div class="recipe-card" *ngFor="let recipe of recipes; let i = index">
         <div class="card-header">
-          <span class="recipe-icon">🍽️</span>
+          <img class="recipe-icon" src="../../../assets/img/icon.png" alt="Recipe Icon">
           <span class="recipe-number">Recipe {{ i + 1 }}</span>
         </div>
 
@@ -44,7 +47,7 @@
         
         <div class="recipe-meta">
           <span class="cooking-time">
-            <span class="icon">🕐</span>
+            <img class="icon" src="../../../assets/img/schedule.png" alt="Cooking Time Icon">
             Cooking time: {{ recipe.cookTime }}
           </span>
         </div>
@@ -57,9 +60,9 @@
 
     <!-- Generate New -->
     <div class="generate-new">
-      <button class="generate-new-btn" (click)="generateNew()">
-        Generate new recipe →
-      </button>
+      <a class="generate-new-btn" (click)="generateNew()">
+        Generate new recipe <img src="../../../assets/img/Arrow 18.png" alt="">
+      </a>
     </div>
   </div>
 </div>
