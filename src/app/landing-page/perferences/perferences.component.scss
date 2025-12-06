@@ -1,0 +1,259 @@
+.preferences-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Quicksand", sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+    position: relative;
+
+    .back-link {
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 1440px;
+        width: 100%;
+        padding-left: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #1E5515;
+        font-size: 18px;
+        font-weight: 500;
+        transition: opacity 0.2s;
+        z-index: 1000;
+        cursor: pointer;
+        font-family: "Quicksand", sans-serif;
+
+        img {
+            width: 20px;
+        }
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    // .preferences-wrapper {
+    //     max-width: 900px;
+    //     width: 100%;
+    // }
+
+    .preferences-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 40px;
+        color: #10310B;
+        font-family: "Quicksand", sans-serif;
+    }
+
+    // Portions und Personen Container nebeneinander
+    .portions-container {
+        display: flex;
+        gap: 60px;
+        margin-bottom: 30px;
+
+        .portions-item {
+            flex: 1;
+
+            .portions-label {
+                font-size: 20px;
+                font-weight: 500;
+                color: #10310B;
+                margin-bottom: 12px;
+                font-family: "Quicksand", sans-serif;
+            }
+
+            .portions-controls {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                .control-btn {
+                    width: 28px;
+                    height: 28px;
+                    background-color: white;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 6px;
+                    transition: all 0.2s;
+                    border: none;
+
+                    &:hover {
+                        background-color: #f0f0f0;
+                    }
+
+                    img {
+                        width: 26px;
+                        height: 26px;
+                    }
+                }
+
+                .portions-value {
+                    font-size: 18px;
+                    font-family: "Quicksand", sans-serif;
+                    color: #10310B;
+
+                    .value-highlight {
+                        font-weight: 600;
+                        color: #10310B;
+                        background-color: #39603933;
+                        padding: 0px 6px;
+                    }
+                }
+            }
+        }
+    }
+
+    // Eine große Box für alle Preferences
+    .preferences-box {
+        background-color: #39603933;
+        padding: 24px;
+        border-radius: 8px;
+        margin-top: 30px;
+        width: 721px;
+        height: auto;
+
+        .preference-section {
+            margin-bottom: 24px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .preference-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 16px;
+
+                .preference-title {
+                    font-size: 24px;
+                    color: #10310B;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-family: "Quicksand", sans-serif;
+
+                    img {
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+            }
+
+            .preference-options {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+
+                .option-btn {
+                    padding: 2px 12px;
+                    background-color: #FAF0E6;
+                    border: none;
+                    border-radius: 20px;
+                    font-size: 18px;
+                    font-family: "Quicksand", sans-serif;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    color: #2c2c2c;
+
+                    &:hover {
+                        background-color: #e8e8e0;
+                    }
+
+                    &.active {
+                        background-color: #396039;
+                        color: #FAF0E6;
+
+                        &:hover {
+                            background-color: #3a723a;
+                        }
+                    }
+                }
+
+                .option-description {
+                    font-size: 13px;
+                    color: #5c5c5c;
+                    width: 100%;
+                    margin-top: -8px;
+                    margin-left: 8px;
+                }
+            }
+
+            .cooking-time-options {
+                display: flex;
+                gap: 12px;
+
+                .time-option {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+
+                    .option-btn {
+                        padding: 2px 12px;
+                        background-color: #FAF0E6;
+                        border: none;
+                        border-radius: 20px;
+                        font-size: 18px;
+                        font-family: "Quicksand", sans-serif;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        color: #2c2c2c;
+                        outline: none;
+
+                        &:hover {
+                            background-color: #e8e8e0;
+                        }
+
+                        &.active {
+                            background-color: #396039;
+                            color: #FAF0E6;
+
+                            &:hover {
+                                background-color: #3a723a;
+                            }
+                        }
+                    }
+
+                    .option-description {
+                        font-size: 13px;
+                        color: #1E5515;
+                        margin: 0;
+                        font-family: "Quicksand", sans-serif;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.start-bttn {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+
+    .generate-btn {
+        width: 258px;
+        height: 62px;
+        background-color: #396039;
+        color: #FAF0E6;
+        font-size: 24px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+
+        &:hover {
+            background-color: #3a723a;
+        }
+    }
+}

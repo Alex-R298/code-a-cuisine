@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { debounceTime, Subject, switchMap, of } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-generate-recipe',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
+  providers: [RecipeService],
   templateUrl: './generate-recipe.component.html',
   styleUrl: './generate-recipe.component.scss'
 })
-export class GenerateRecipeComponent {
+export class GenerateRecipeComponent implements OnInit {
   isDropdownOpen = false;
   selectedUnit = 'gram';
   units = ['gram', 'ml', 'piece'];
@@ -29,6 +31,7 @@ export class GenerateRecipeComponent {
   
   selectedServingSize = '';
   servingSizeInvalid = false;
+  currentRecipeId: string | null = null;  // NEU
 
   ingredientInput = '';
   suggestions: string[] = [];
@@ -74,13 +77,17 @@ export class GenerateRecipeComponent {
     'z': ['Zucchini', 'Zest', 'Za\'atar']
   };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private recipeService: RecipeService,
+    private router: Router,
+    private route: ActivatedRoute  // NEU
+  ) {
     this.searchSubject.pipe(
       debounceTime(400),
       switchMap(value => {
         console.log('Search value:', value);
         
-        // Leer? Nichts tun
         if (value.length === 0) {
           this.showSuggestions = false;
           this.suggestions = [];
@@ -89,7 +96,6 @@ export class GenerateRecipeComponent {
 
         const firstLetter = value.toLowerCase()[0];
 
-        // Lokale Liste für 1-2 Buchstaben
         if (value.length <= 2) {
           if (this.commonIngredients[firstLetter]) {
             this.suggestions = this.commonIngredients[firstLetter];
@@ -102,7 +108,6 @@ export class GenerateRecipeComponent {
           return of(null);
         }
 
-        // Cache Check
         if (this.cache.has(value.toLowerCase())) {
           console.log('From cache:', value);
           this.suggestions = this.cache.get(value.toLowerCase())!;
@@ -110,7 +115,6 @@ export class GenerateRecipeComponent {
           return of(null);
         }
 
-        // AI erst ab 3 Buchstaben
         console.log('Calling AI for:', value);
         return this.http.post<any>(
           'http://localhost:5678/webhook/ingredient-suggestions',
@@ -148,6 +152,37 @@ export class GenerateRecipeComponent {
     });
   }
 
+  // NEU: Lifecycle Hook
+  async ngOnInit() {
+    // Check ob wir eine Recipe ID haben (wenn User zurück kommt)
+    const recipeId = this.route.snapshot.queryParams['recipeId'];
+    
+    if (recipeId) {
+      console.log('Loading existing recipe:', recipeId);
+      this.currentRecipeId = recipeId;
+      await this.loadRecipe(recipeId);
+    }
+  }
+
+  // NEU: Lade Recipe aus Firestore
+  async loadRecipe(recipeId: string) {
+    try {
+      const recipe = await this.recipeService.getRecipe(recipeId);
+      
+      if (recipe && recipe.ingredients) {
+        this.listIngredients = recipe.ingredients.map(ing => ({
+          ...ing,
+          isEditing: false,
+          isDropdownOpen: false,
+          isDeleting: false
+        }));
+        console.log('Recipe loaded:', recipe);
+      }
+    } catch (error) {
+      console.error('Error loading recipe:', error);
+    }
+  }
+
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
@@ -163,35 +198,29 @@ export class GenerateRecipeComponent {
     this.searchSubject.next(value);
   }
 
-  // NEU: Nur Zahlen erlauben
   onServingSizeInput(event: any) {
     let value = event.target.value;
-    // Entferne alle Nicht-Zahlen
     value = value.replace(/[^0-9]/g, '');
     this.selectedServingSize = value;
     this.servingSizeInvalid = false;
   }
 
-  // NEU: Nur Zahlen im Edit-Modus
   onEditAmountInput(event: any, index: number) {
     let value = event.target.value;
-    // Entferne alle Nicht-Zahlen
     value = value.replace(/[^0-9]/g, '');
     this.listIngredients[index].amount = value;
     this.listIngredients[index].isAmountInvalid = false;
-    // Setze den Input-Wert direkt
     event.target.value = value;
   }
 
   selectSuggestion(suggestion: string) {
-  this.ingredientInput = suggestion;
-  this.showSuggestions = false;
-}
+    this.ingredientInput = suggestion;
+    this.showSuggestions = false;
+  }
 
-// NEU: Zeige nur die ersten 3 Vorschläge
-get limitedSuggestions(): string[] {
-  return this.suggestions.slice(0, 3);
-}
+  get limitedSuggestions(): string[] {
+    return this.suggestions.slice(0, 3);
+  }
 
   closeSuggestions() {
     setTimeout(() => {
@@ -200,7 +229,6 @@ get limitedSuggestions(): string[] {
   }
 
   addIngredient() {
-    // Validierung
     if (!this.selectedServingSize || this.selectedServingSize.trim() === '') {
       this.servingSizeInvalid = true;
       return;
@@ -218,12 +246,12 @@ get limitedSuggestions(): string[] {
       
       this.ingredientInput = '';
       this.selectedServingSize = '';
+      this.selectedUnit = 'gram';
       this.servingSizeInvalid = false;
       this.showSuggestions = false;
     }
   }
 
-  // GEÄNDERT: Mit Delete-Animation
   deleteIngredient(index: number) {
     this.listIngredients[index].isDeleting = true;
     
@@ -237,7 +265,6 @@ get limitedSuggestions(): string[] {
   }
 
   saveIngredient(index: number) {
-    // Validierung: Amount darf nicht leer sein
     if (!this.listIngredients[index].amount || this.listIngredients[index].amount.trim() === '') {
       this.listIngredients[index].isAmountInvalid = true;
       return;
@@ -255,5 +282,41 @@ get limitedSuggestions(): string[] {
   selectEditUnit(index: number, unit: string) {
     this.listIngredients[index].unit = unit;
     this.listIngredients[index].isDropdownOpen = false;
+  }
+
+  // GEÄNDERT: Update wenn Recipe schon existiert, sonst neu erstellen
+  async saveAndContinue() {
+    if (this.listIngredients.length === 0) {
+      alert('Please add at least one ingredient!');
+      return;
+    }
+
+    try {
+      console.log('Saving ingredients:', this.listIngredients);
+      
+      let recipeId: string;
+      
+      // Wenn Recipe schon existiert, update, sonst neu erstellen
+      if (this.currentRecipeId) {
+        await this.recipeService.updateIngredients(
+          this.currentRecipeId,
+          this.listIngredients
+        );
+        recipeId = this.currentRecipeId;
+        console.log('Ingredients updated for recipe:', recipeId);
+      } else {
+        recipeId = await this.recipeService.saveIngredients(
+          this.listIngredients
+        );
+        this.currentRecipeId = recipeId;
+        console.log('New recipe created with ID:', recipeId);
+      }
+
+      // Navigate zu Preferences
+      this.router.navigate(['/perferences', recipeId]);
+    } catch (error) {
+      console.error('Error saving ingredients:', error);
+      alert('Error saving ingredients. Please try again.');
+    }
   }
 }

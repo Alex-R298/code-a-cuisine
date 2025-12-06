@@ -1,1 +1,77 @@
-<p>perferences works!</p>
+<section class="preferences-section">
+    <a (click)="goBack()" class="back-link"><img src="../../../assets/img/Arrow 11.png" alt="">Ingredients</a>
+    <div class="preferences-wrapper">
+        <h3 class="preferences-title">Choose your preferences</h3>
+        
+        <div class="portions-container">
+            <div class="portions-item">
+                <p class="portions-label">How many portions you need?</p>
+                <div class="portions-controls">
+                    <button (click)="decrementPortions()" class="control-btn"><img src="../../../assets/img/Property 1=default.png" alt=""></button>
+                    <p class="portions-value"><span class="value-highlight">{{ portions }}</span> Portions</p>
+                    <button (click)="incrementPortions()" class="control-btn"><img src="../../../assets/img/Property 1=default (1).png" alt=""></button>
+                </div>
+            </div>
+            <div class="portions-item">
+                <p class="portions-label">How many are cooking?</p>
+                <div class="portions-controls">
+                    <button (click)="decrementPersons()" class="control-btn"><img src="../../../assets/img/Property 1=default.png" alt=""></button>
+                    <p class="portions-value"><span class="value-highlight">{{ persons }}</span> Person</p>
+                    <button (click)="incrementPersons()" class="control-btn"><img src="../../../assets/img/Property 1=default (1).png" alt=""></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="preferences-box">
+            <div class="preference-section">
+                <div class="preference-header">
+                    <p class="preference-title"><img src="../../../assets/img/schedule.png" alt="">Cooking time:</p>
+                </div>
+                <div class="preference-options cooking-time-options">
+                    <div class="time-option">
+                        <button class="option-btn" (click)="selectCookingTime('Quick')" [class.active]="selectedCookingTime === 'Quick'">Quick</button>
+                        <p class="option-description">up to 20min</p>
+                    </div>
+                    <div class="time-option">
+                        <button class="option-btn" (click)="selectCookingTime('Medium')" [class.active]="selectedCookingTime === 'Medium'">Medium</button>
+                        <p class="option-description">25-40min</p>
+                    </div>
+                    <div class="time-option">
+                        <button class="option-btn" (click)="selectCookingTime('Complex')" [class.active]="selectedCookingTime === 'Complex'">Complex</button>
+                        <p class="option-description">over 45min</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preference-section">
+                <div class="preference-header">
+                    <p class="preference-title"><img src="../../../assets/img/public.png" alt="">Cuisine</p>
+                </div>
+                <div class="preference-options">
+                    <button class="option-btn" (click)="selectCuisine('German')" [class.active]="selectedCuisine === 'German'">German</button>
+                    <button class="option-btn" (click)="selectCuisine('Italian')" [class.active]="selectedCuisine === 'Italian'">Italian</button>
+                    <button class="option-btn" (click)="selectCuisine('Indian')" [class.active]="selectedCuisine === 'Indian'">Indian</button>
+                    <button class="option-btn" (click)="selectCuisine('Japanese')" [class.active]="selectedCuisine === 'Japanese'">Japanese</button>
+                    <button class="option-btn" (click)="selectCuisine('Gourmet')" [class.active]="selectedCuisine === 'Gourmet'">Gourmet</button>
+                    <button class="option-btn" (click)="selectCuisine('Fusion')" [class.active]="selectedCuisine === 'Fusion'">Fusion</button>
+                </div>
+            </div>
+
+            <div class="preference-section">
+                <div class="preference-header">
+                    <p class="preference-title"><img src="../../../assets/img/fork_spoon.png" alt="">Diet preferences</p>
+                </div>
+                <div class="preference-options">
+                    <button class="option-btn" (click)="selectDiet('Vegetarian')" [class.active]="selectedDiet === 'Vegetarian'">Vegetarian</button>
+                    <button class="option-btn" (click)="selectDiet('Vegan')" [class.active]="selectedDiet === 'Vegan'">Vegan</button>
+                    <button class="option-btn" (click)="selectDiet('Keto')" [class.active]="selectedDiet === 'Keto'">Keto</button>
+                    <button class="option-btn" (click)="selectDiet('No preferences')" [class.active]="selectedDiet === 'No preferences'">No preferences</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="start-bttn">
+    <button class="generate-btn" (click)="generateRecipe()">Generate a recipe</button>
+</div>
+    </div>
+</section>

@@ -1,6 +1,6 @@
 <section>
     <a href="">
-        <img *ngIf="!isGenerateRecipePage" src="../../../assets/img/Capa_2 (1).png" alt="">
-        <img *ngIf="isGenerateRecipePage" src="../../../assets/img/Capa_2.png" alt="">
+        <img *ngIf="!isGenerateRecipePage && !isPerferencesPage" src="../../../assets/img/Capa_2 (1).png" alt="">
+        <img *ngIf="isGenerateRecipePage || isPerferencesPage" src="../../../assets/img/Capa_2.png" alt="">
     </a>
 </section>

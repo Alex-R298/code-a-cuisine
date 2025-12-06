@@ -9,4 +9,16 @@ import { Component } from '@angular/core';
 })
 export class LoadingComponent {
 
+  // In loading.component.ts
+
+// async ngOnInit() {
+//   const recipeId = this.route.snapshot.params['id'];
+  
+//   // 3. Rufe n8n Workflow auf
+//   await this.generateRecipeFromAI(recipeId);
+  
+//   // 4. Navigate zu Results
+//   this.router.navigate(['/recipe-results', recipeId]);
+// }
+
 }

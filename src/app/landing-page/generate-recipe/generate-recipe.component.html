@@ -25,11 +25,8 @@
             <label for="" class="input-label">
                 <span>Serving size</span>
                 <div class="serving-inputs">
-                    <input type="text" 
-                           [(ngModel)]="selectedServingSize" 
-                           (input)="onServingSizeInput($event)"
-                           [class.invalid]="servingSizeInvalid"
-                           placeholder="100">
+                    <input type="text" [(ngModel)]="selectedServingSize" (input)="onServingSizeInput($event)"
+                        [class.invalid]="servingSizeInvalid" placeholder="100">
                     <div class="custom-dropdown">
                         <div class="dropdown-selected" (click)="toggleDropdown()">
                             {{ selectedUnit }}
@@ -59,70 +56,67 @@
                 <ul *ngIf="listIngredients.length > 0">
                     <li *ngFor="let ingredient of listIngredients; let i = index">
 
-                    <!-- NORMAL VIEW -->
-                    <div class="ingredient-normal" *ngIf="!ingredient.isEditing">
-                        <span class="ingredient-text">
-                            • {{ ingredient.amount }}{{ getDisplayUnit(ingredient.unit) }} {{ ingredient.name }}
-                        </span>
-                        <div class="ingredient-actions">
-                            <button class="edit-btn" (click)="editIngredient(i)">
-                                <img src="../../../assets/img/Frame 975.png" alt="Edit">
-                            </button>
-                            <button class="delete-btn" (click)="deleteIngredient(i)">
-                                <img src="../../../assets/img/Property 1=Default (3).png" alt="Delete">
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- EDIT VIEW -->
-                    <div class="ingredient-editing" *ngIf="ingredient.isEditing">
-                        <span class="bullet">•</span>
-
-                        <input type="text" 
-                               [value]="ingredient.amount" 
-                               (input)="onEditAmountInput($event, i)"
-                               [class.invalid]="ingredient.isAmountInvalid"
-                               class="edit-amount">
-
-                        <div class="custom-dropdown-edit">
-                            <div class="dropdown-selected-edit" (click)="toggleEditDropdown(i)">
-                                {{ ingredient.unit }}
-                                <span class="dropdown-arrow" [class.open]="ingredient.isDropdownOpen">
-                                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1 1L5 5L9 1" stroke="#1E5515" stroke-width="1.5"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </span>
+                        <!-- NORMAL VIEW -->
+                        <div class="ingredient-normal" *ngIf="!ingredient.isEditing">
+                            <span class="ingredient-text">
+                                • {{ ingredient.amount }}{{ getDisplayUnit(ingredient.unit) }} {{ ingredient.name }}
+                            </span>
+                            <div class="ingredient-actions">
+                                <button class="edit-btn" (click)="editIngredient(i)">
+                                    <img src="../../../assets/img/Frame 975.png" alt="Edit">
+                                </button>
+                                <button class="delete-btn" (click)="deleteIngredient(i)">
+                                    <img src="../../../assets/img/Property 1=Default (3).png" alt="Delete">
+                                </button>
                             </div>
-                            <div class="dropdown-options-edit" *ngIf="ingredient.isDropdownOpen">
-                                <div class="dropdown-option-edit" *ngFor="let unit of units"
-                                    (click)="selectEditUnit(i, unit)" [class.selected]="unit === ingredient.unit">
-                                    {{ unit }}
+                        </div>
+
+                        <!-- EDIT VIEW -->
+                        <div class="ingredient-editing" *ngIf="ingredient.isEditing">
+                            <span class="bullet">•</span>
+
+                            <input type="text" [value]="ingredient.amount" (input)="onEditAmountInput($event, i)"
+                                [class.invalid]="ingredient.isAmountInvalid" class="edit-amount">
+
+                            <div class="custom-dropdown-edit">
+                                <div class="dropdown-selected-edit" (click)="toggleEditDropdown(i)">
+                                    {{ ingredient.unit }}
+                                    <span class="dropdown-arrow" [class.open]="ingredient.isDropdownOpen">
+                                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1L5 5L9 1" stroke="#1E5515" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="dropdown-options-edit" *ngIf="ingredient.isDropdownOpen">
+                                    <div class="dropdown-option-edit" *ngFor="let unit of units"
+                                        (click)="selectEditUnit(i, unit)" [class.selected]="unit === ingredient.unit">
+                                        {{ unit }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <span class="ingredient-name">{{ ingredient.name }}</span>
+                            <span class="ingredient-name">{{ ingredient.name }}</span>
 
-                        <div class="ingredient-actions">
-                            <button class="save-btn" (click)="saveIngredient(i)">
-                                <img src="../../../assets/img/Property 1=Default (2).png" alt="Save">
-                            </button>
-                            <button class="delete-btn" (click)="deleteIngredient(i)">
-                                <img src="../../../assets/img/Property 1=Default (3).png" alt="Delete">
-                            </button>
+                            <div class="ingredient-actions">
+                                <button class="save-btn" (click)="saveIngredient(i)">
+                                    <img src="../../../assets/img/Property 1=Default (2).png" alt="Save">
+                                </button>
+                                <button class="delete-btn" (click)="deleteIngredient(i)">
+                                    <img src="../../../assets/img/Property 1=Default (3).png" alt="Delete">
+                                </button>
+                            </div>
                         </div>
-                    </div>
                     </li>
                 </ul>
             </div>
 
             <!-- Next Step Button -->
             <div class="next-bttn" *ngIf="listIngredients.length > 0">
-                <button routerLink="/perferences">Next step</button>
+                <button (click)="saveAndContinue()">Next step</button>
             </div>
         </div>
     </div>
-    
+
 </section>

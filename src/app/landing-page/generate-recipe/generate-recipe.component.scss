@@ -356,7 +356,8 @@ section {
 
     li {
         animation: slideInFromLeft 0.3s ease-out;
-        transition: margin-bottom 0.3s ease;
+        transition: background-color 0.2s ease, margin-bottom 0.3s ease;
+        border-radius: 12px;
         
         // NEU: Wenn Dropdown offen ist, füge Platz hinzu
         &:has(.ingredient-editing .dropdown-options-edit) {
@@ -370,7 +371,6 @@ section {
         
         &:hover:not(:has(.ingredient-editing)) {
             background-color: #FAF0E6CC;
-            border-radius: 12px;
         }
     }
 
