@@ -1,1 +1,140 @@
-<p>recipe-view works!</p>
+<div class="recipe-view-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading recipe...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <h2>Oops! Recipe not found</h2>
+    <button (click)="goBack()">Back to Results</button>
+  </div>
+
+  <!-- Recipe Content -->
+  <div *ngIf="recipe && !loading" class="recipe-content">
+    <!-- Back Button -->
+    <button class="back-button" (click)="goBack()">
+      ← Recipe results
+    </button>
+
+    <!-- Header -->
+    <div class="recipe-header">
+      <div class="header-top">
+        <div class="cooking-info">
+          <span class="cooking-time">
+            <span class="icon">🕐</span>
+            Cooking time: {{ recipe.cookTime }}
+          </span>
+        </div>
+
+        <div class="tags">
+          <span class="tag tag-diet">Vegetarian</span>
+          <span class="tag tag-time">Quick</span>
+          <span class="tag tag-health">♥66</span>
+        </div>
+      </div>
+
+      <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+      <div class="cooking-persons">
+        <span>Cooking person: {{ recipe.servings }}</span>
+        <span class="chef-badge">👨‍🍳 Chef 1</span>
+        <span class="chef-badge chef-2">👨‍🍳 Chef 2</span>
+      </div>
+    </div>
+
+    <!-- Nutritional Information -->
+    <div class="nutrition-card" *ngIf="recipe.nutrition">
+      <h3>Nutritional information</h3>
+      <div class="nutrition-grid">
+        <div class="nutrition-item">
+          <span class="label">Energie</span>
+          <span class="value">{{ recipe.nutrition.calories }}</span>
+        </div>
+        <div class="nutrition-item">
+          <span class="label">Protein</span>
+          <span class="value">{{ recipe.nutrition.protein }}</span>
+        </div>
+        <div class="nutrition-item">
+          <span class="label">Fat</span>
+          <span class="value">{{ recipe.nutrition.fat }}</span>
+        </div>
+        <div class="nutrition-item">
+          <span class="label">Carbs</span>
+          <span class="value">{{ recipe.nutrition.carbs }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ingredients Section -->
+    <div class="ingredients-section">
+      <div class="section-header">
+        <div class="icon-decoration left">🍲</div>
+        <h2>Ingredients</h2>
+        <div class="icon-decoration right">🫒</div>
+      </div>
+
+      <div class="ingredients-columns">
+        <!-- Your Ingredients -->
+        <div class="ingredients-column">
+          <h3>Your ingredients</h3>
+          <ul>
+            <li *ngFor="let ingredient of userIngredients">
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Extra Ingredients -->
+        <div class="ingredients-column" *ngIf="extraIngredients.length > 0">
+          <h3>Extra ingredients</h3>
+          <ul>
+            <li *ngFor="let ingredient of extraIngredients">
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Directions Section -->
+    <div class="directions-section">
+      <div class="section-header">
+        <div class="icon-decoration left">🌿</div>
+        <h2>Directions</h2>
+        <div class="icon-decoration right">✂️</div>
+      </div>
+
+      <div class="directions-steps">
+        <div class="direction-step" *ngFor="let instruction of recipe.instructions; let i = index">
+          <div class="step-header">
+            <span class="step-number">{{ i + 1 }}.</span>
+            <span class="step-title">{{ getStepTitle(instruction) }}</span>
+            <span class="chef-badge" [class.chef-2]="i % 2 === 1">
+              👨‍🍳 Chef {{ i % 2 === 0 ? '1' : '2' }}
+            </span>
+          </div>
+          <p class="step-description">{{ instruction }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heart Section -->
+    <div class="heart-section">
+      <p>Just finished this meal?</p>
+      <button class="heart-button" (click)="giveHeart()">
+        Give it a heart, so that the others know this is delicious.
+        <span class="heart-icon">❤️</span>
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="recipe-footer">
+      <p>Find inspiration for your next culinary adventure!</p>
+      <button class="cookbook-button" (click)="goToCookbook()">
+        Cookbook
+      </button>
+    </div>
+  </div>
+</div>

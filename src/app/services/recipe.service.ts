@@ -19,7 +19,7 @@ export interface Recipe {
   id?: string;
   ingredients: Ingredient[];
   preferences?: RecipePreferences;
-  generatedRecipe?: any;
+  generatedRecipes?: any[];  // Array of 3 recipes!
   createdAt: Date;
 }
 

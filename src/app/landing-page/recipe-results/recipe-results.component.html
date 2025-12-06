@@ -1,1 +1,65 @@
-<p>recipe-results works!</p>
+<div class="recipe-results-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading your recipes...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <h2>Oops! Something went wrong</h2>
+    <p>We couldn't load your recipes. Please try again.</p>
+    <button (click)="generateNew()">Back to Home</button>
+  </div>
+
+  <!-- Recipe Overview -->
+  <div *ngIf="!loading && !error && recipes.length > 0" class="recipes-overview">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <img src="assets/logo.svg" alt="Code à Cuisine">
+      </div>
+      
+      <h1>The recipe results</h1>
+      <p class="subtitle">
+        We took what you have and let our AI do the thinking.<br>
+        Here are 3 easy recipes you can make right now!
+      </p>
+
+      <div class="tags">
+        <span class="tag">{{ cuisine }}</span>
+        <span class="tag">{{ cookingTime }}</span>
+      </div>
+    </div>
+
+    <!-- Recipe Cards -->
+    <div class="recipe-cards">
+      <div class="recipe-card" *ngFor="let recipe of recipes; let i = index">
+        <div class="card-header">
+          <span class="recipe-icon">🍽️</span>
+          <span class="recipe-number">Recipe {{ i + 1 }}</span>
+        </div>
+
+        <h3 class="recipe-title">{{ recipe.title }}</h3>
+        
+        <div class="recipe-meta">
+          <span class="cooking-time">
+            <span class="icon">🕐</span>
+            Cooking time: {{ recipe.cookTime }}
+          </span>
+        </div>
+
+        <button class="view-btn" (click)="viewRecipe(i)">
+          View
+        </button>
+      </div>
+    </div>
+
+    <!-- Generate New -->
+    <div class="generate-new">
+      <button class="generate-new-btn" (click)="generateNew()">
+        Generate new recipe →
+      </button>
+    </div>
+  </div>
+</div>

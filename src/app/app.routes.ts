@@ -4,11 +4,14 @@ import { GenerateRecipeComponent } from './landing-page/generate-recipe/generate
 import { PerferencesComponent } from './landing-page/perferences/perferences.component';
 import { LoadingComponent } from './landing-page/loading/loading.component';  // NEU
 import { RecipeResultsComponent } from './landing-page/recipe-results/recipe-results.component';
+import { RecipeViewComponent } from './landing-page/recipe-view/recipe-view.component';  // Recipe View!  // GEÄNDERT: mit :id Parameter
+
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent }, 
     { path: 'generate-recipe', component: GenerateRecipeComponent }, 
     { path: 'perferences/:id', component: PerferencesComponent },
      { path: 'loading/:id', component: LoadingComponent },  // NEU
-  { path: 'recipe-results/:id', component: RecipeResultsComponent }   // GEÄNDERT: mit :id Parameter
+  { path: 'recipe-results/:id', component: RecipeResultsComponent }, 
+   { path: 'recipe-view/:recipeId/:index', component: RecipeViewComponent }  // Recipe View!  // GEÄNDERT: mit :id Parameter
 ];
