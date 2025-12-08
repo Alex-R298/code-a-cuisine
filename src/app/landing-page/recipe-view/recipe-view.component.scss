@@ -1,6 +1,5 @@
 .recipe-view-container {
   min-height: 100vh;
-  background: #f5f5f0;
   padding: 20px;
 }
 
@@ -25,34 +24,61 @@
 }
 
 .recipe-content {
-  max-width: 900px;
+  max-width: 1248px;
   margin: 0 auto;
-  background: white;
-  border: 3px solid #2d5016;
-  border-radius: 12px;
+  background: #FAF0E64D;
+  border: 4px solid #FAF0E6;
+  border-radius: 20px;
   padding: 40px;
   position: relative;
+  margin-top: 200px;
 }
 
 .back-button {
-  background: transparent;
-  border: none;
-  color: #2d5016;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 20px;
-  padding: 8px 0;
-  
-  &:hover {
-    text-decoration: underline;
-  }
-}
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 1440px;
+        width: 100%;
+        padding-left: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #1E5515;
+        font-size: 18px;
+        font-weight: 500;
+        transition: opacity 0.2s;
+        z-index: 1000;
+        cursor: pointer;
+        font-family: "Quicksand", sans-serif;
+
+        img {
+            width: 20px;
+        }
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
 
 .recipe-header {
-  border-bottom: 2px solid #f0f0dc;
-  padding-bottom: 30px;
-  margin-bottom: 30px;
+  max-width: 1152px;
+  height: auto;
+  background-color: #FAF0E6;
+  border-radius: 20px;
+  padding: 24px;
+
+  .header-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+
+    .left-content {
+      flex: 1;
+    }
+  }
 
   .header-top {
     display: flex;
@@ -72,32 +98,6 @@
       }
     }
 
-    .tags {
-      display: flex;
-      gap: 10px;
-
-      .tag {
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-
-        &.tag-diet {
-          background: #e8f5e9;
-          color: #2d5016;
-        }
-
-        &.tag-time {
-          background: #fff3e0;
-          color: #e65100;
-        }
-
-        &.tag-health {
-          background: #fce4ec;
-          color: #c2185b;
-        }
-      }
-    }
   }
 
   .recipe-title {
@@ -132,10 +132,37 @@
 }
 
 .nutrition-card {
-  background: #faf8f3;
-  border-radius: 8px;
+  background: white;
   padding: 20px;
-  margin-bottom: 40px;
+  border-radius: 12px;
+  min-width: 300px;
+
+  .tags {
+      display: flex;
+      gap: 10px;
+
+      .tag {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+
+        &.tag-diet {
+          background: #e8f5e9;
+          color: #2d5016;
+        }
+
+        &.tag-time {
+          background: #fff3e0;
+          color: #e65100;
+        }
+
+        &.tag-health {
+          background: #fce4ec;
+          color: #c2185b;
+        }
+      }
+    }
 
   h3 {
     color: #2d5016;

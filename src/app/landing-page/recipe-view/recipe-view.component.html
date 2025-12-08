@@ -1,3 +1,7 @@
+<a class="back-button" (click)="goBack()">
+  <img src="../../../assets/img/Arrow 11.png" alt=""> Recipe results
+</a>
+
 <div class="recipe-view-container">
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-state">
@@ -14,9 +18,7 @@
   <!-- Recipe Content -->
   <div *ngIf="recipe && !loading" class="recipe-content">
     <!-- Back Button -->
-    <button class="back-button" (click)="goBack()">
-      ← Recipe results
-    </button>
+
 
     <!-- Header -->
     <div class="recipe-header">
@@ -27,45 +29,48 @@
             Cooking time: {{ recipe.cookTime }}
           </span>
         </div>
+      </div>
 
+      <div class="header-content">
+        <div class="left-content">
+          <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+          <div class="cooking-persons">
+            <span>Cooking person: {{ recipe.servings }}</span>
+            <span class="chef-badge">👨‍🍳 Chef 1</span>
+            <span class="chef-badge chef-2">👨‍🍳 Chef 2</span>
+          </div>
+        </div>
+
+        <!-- Nutritional Information -->
+        <div class="nutrition-card" *ngIf="recipe.nutrition">
         <div class="tags">
           <span class="tag tag-diet">Vegetarian</span>
           <span class="tag tag-time">Quick</span>
           <span class="tag tag-health">♥66</span>
         </div>
-      </div>
-
-      <h1 class="recipe-title">{{ recipe.title }}</h1>
-
-      <div class="cooking-persons">
-        <span>Cooking person: {{ recipe.servings }}</span>
-        <span class="chef-badge">👨‍🍳 Chef 1</span>
-        <span class="chef-badge chef-2">👨‍🍳 Chef 2</span>
-      </div>
-    </div>
-
-    <!-- Nutritional Information -->
-    <div class="nutrition-card" *ngIf="recipe.nutrition">
-      <h3>Nutritional information</h3>
-      <div class="nutrition-grid">
-        <div class="nutrition-item">
-          <span class="label">Energie</span>
-          <span class="value">{{ recipe.nutrition.calories }}</span>
-        </div>
-        <div class="nutrition-item">
-          <span class="label">Protein</span>
-          <span class="value">{{ recipe.nutrition.protein }}</span>
-        </div>
-        <div class="nutrition-item">
-          <span class="label">Fat</span>
-          <span class="value">{{ recipe.nutrition.fat }}</span>
-        </div>
-        <div class="nutrition-item">
-          <span class="label">Carbs</span>
-          <span class="value">{{ recipe.nutrition.carbs }}</span>
+        <h3>Nutritional information</h3>
+        <div class="nutrition-grid">
+          <div class="nutrition-item">
+            <span class="label">Energie</span>
+            <span class="value">{{ recipe.nutrition.calories }}</span>
+          </div>
+          <div class="nutrition-item">
+            <span class="label">Protein</span>
+            <span class="value">{{ recipe.nutrition.protein }}</span>
+          </div>
+          <div class="nutrition-item">
+            <span class="label">Fat</span>
+            <span class="value">{{ recipe.nutrition.fat }}</span>
+          </div>
+          <div class="nutrition-item">
+            <span class="label">Carbs</span>
+            <span class="value">{{ recipe.nutrition.carbs }}</span>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
     <!-- Ingredients Section -->
     <div class="ingredients-section">

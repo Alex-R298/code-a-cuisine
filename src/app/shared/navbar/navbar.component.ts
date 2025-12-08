@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 export class NavbarComponent {
   isGenerateRecipePage = false;
   isPerferencesPage = false;
+  isRecipeViewPage = false;
 
   constructor(private router: Router) {
     this.router.events.pipe(
@@ -20,6 +21,8 @@ export class NavbarComponent {
     ).subscribe(() => {
       this.isGenerateRecipePage = this.router.url.includes('/generate-recipe');
       this.isPerferencesPage = this.router.url.includes('/perferences');
+      this.isRecipeViewPage = this.router.url.includes('/recipe-view');
+      
     });
   }
 }
