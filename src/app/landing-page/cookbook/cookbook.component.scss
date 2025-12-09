@@ -229,6 +229,15 @@
   }
 }
 
+@keyframes rotationBack {
+  from {
+    transform: rotate(20deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
     .category-title {
         color: #1E5515;
         font-size: 28px;
@@ -245,6 +254,7 @@
             width: 28px;
             height: 28px;
             transition: transform 0.3s;
+            animation: rotationBack 0.2s ease-in-out forwards;
         }
     }
 
