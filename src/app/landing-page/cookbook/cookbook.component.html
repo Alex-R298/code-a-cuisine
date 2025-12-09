@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="cookbook-header">
       <a class="back-button" (click)="goBack()">
-    <img src="../../../assets/img/Arrow 11.png" alt="">Back
-  </a>
+        <img src="../../../assets/img/Arrow 11.png" alt="">Back
+      </a>
     </div>
 
     <!-- Cookbook Content -->
@@ -23,40 +23,38 @@
           </div>
 
           <div class="carousel-container">
-          <!-- <button class="carousel-btn prev" (click)="previousSlide()" [disabled]="currentSlideIndex === 0">
-            ‹
-          </button> -->
-
-          <div class="carousel-wrapper">
-            <div class="carousel-track" [style.transform]="'translateX(-' + (currentSlideIndex * 50) + '%)'">
-              <div class="recipe-card" *ngFor="let recipe of likedRecipes; let i = index">
-                <div class="recipe-card-content" (click)="viewRecipe(recipe.id)">
-                  <div class="recipe-meta">
-                    <div class="recipe-time">
-                      <img src="../../../assets/img/schedule.png" alt="">
-                      <span>Cooking time: {{ recipe.cookingTime }}</span>
+            <div 
+              class="carousel-wrapper"
+              (mousedown)="onDragStart($event)"
+              (mousemove)="onDragMove($event)"
+              (mouseup)="onDragEnd()"
+              (mouseleave)="onDragEnd()">
+              
+              <div class="carousel-track" [style.transform]="getTransform()">
+                <div class="recipe-card" *ngFor="let recipe of likedRecipes; let i = index">
+                  <div class="recipe-card-content" (click)="viewRecipe(recipe.id, $event)">
+                    <div class="recipe-meta">
+                      <div class="recipe-time">
+                        <img src="../../../assets/img/schedule.png" alt="">
+                        <span>Cooking time: {{ recipe.cookingTime }}</span>
+                      </div>
+                      <div class="recipe-likes">
+                        <span class="heart"><img src="../../../assets/img/favorite.png" alt="">{{ recipe.likes }}</span>
+                      </div>
                     </div>
-                    <div class="recipe-likes">
-                      <span class="heart">♥{{ recipe.likes }}</span>
-                    </div>
+                    <h3>{{ recipe.title }}</h3>
                   </div>
-                  <h3>{{ recipe.title }}</h3>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- <button class="carousel-btn next" (click)="nextSlide()" [disabled]="currentSlideIndex >= likedRecipes.length - 2">
-            ›
-          </button> -->
         </div>
-      </div>
       </div>
 
       <!-- Cuisine Categories -->
       <div class="cuisine-categories">
         <div class="category-card" *ngFor="let cuisine of recipes" (click)="browseCuisine(cuisine.title)">
-          <h3 class="category-title">{{ cuisine.title }}</h3>
+          <h3 class="category-title">{{ cuisine.title }} <img [src]="'assets/img/' + cuisine.imgIcon" [alt]="cuisine.title"></h3>
           <div class="category-image">
             <img [src]="'assets/img/' + cuisine.img" [alt]="cuisine.title">
           </div>

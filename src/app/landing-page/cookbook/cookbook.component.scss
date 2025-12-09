@@ -74,6 +74,7 @@
 // Liked Recipes Section
 .liked-recipes-section {
     max-width: 823px;
+
     .section-header {
         display: flex;
         align-items: center;
@@ -101,41 +102,26 @@
     gap: 15px;
 }
 
-.carousel-btn {
-    background: #2d5016;
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-
-    &:hover:not(:disabled) {
-        background: #1f3810;
-        transform: scale(1.1);
-    }
-
-    &:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-    }
-}
-
 .carousel-wrapper {
     flex: 1;
     overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    border-radius: 20px;
+
+    &:active {
+        cursor: grabbing;
+    }
 }
 
 .carousel-track {
     display: flex;
     gap: 20px;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease-out;
+
+    &.dragging {
+        transition: none;
+    }
 }
 
 .recipe-card {
@@ -148,13 +134,14 @@
         cursor: pointer;
         transition: all 0.3s;
         width: 370px;
-        height: auto;
+        height: 124px;
+        user-select: none;
+        transition: all 0.3s;
 
         &:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            background: #DBE0DBE6;
         }
-  
+
         .recipe-meta {
             display: flex;
             justify-content: space-between;
@@ -166,21 +153,20 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #666;
-            font-size: 14px;
+            color: #396039;
 
-            img {
-                width: 16px;
-                height: 16px;
+            span {
+                font-size: 18px;
+                font-family: 'Quicksand', sans-serif;
             }
         }
 
         h3 {
-            color: #2d5016;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.3;
+            color: #1E5515;
+            font-size: 24px;
+            font-weight: 500;
+            font-family: 'Quicksand', sans-serif;
+            max-width: 263px;
         }
 
         .recipe-likes {
@@ -189,15 +175,17 @@
             gap: 8px;
 
             .heart {
-                display: inline-flex;
+                padding: 2px 12px;
+                border-radius: 30px;
+                font-size: 18px;
+                background-color: #39603933;
+                color: #10310B;
+                font-family: "Quicksand", sans-serif;
+                font-weight: 500;
                 align-items: center;
-                gap: 5px;
-                padding: 6px 12px;
-                background: #fce4ec;
-                color: #c2185b;
-                border-radius: 20px;
-                font-size: 14px;
-                font-weight: 600;
+                gap: 4px;
+                display: inline-flex;
+                background-color: #3960394D;
             }
         }
     }
@@ -218,32 +206,59 @@
     transition: all 0.3s;
 
     &:hover {
-        transform: translateY(-5px);
 
         .category-image {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            img {
+                transform: scale(1.05);
+            }
+        }
+
+        .category-title {
+            img {
+                animation: rotation 0.2s ease-in-out forwards;
+            }
         }
     }
 
+    @keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(20deg);
+  }
+}
+
     .category-title {
-        color: #2d5016;
-        font-size: 24px;
-        font-weight: 700;
+        color: #1E5515;
+        font-size: 28px;
+        font-weight: 600;
         margin: 0 0 15px 0;
         text-align: left;
+        font-family: "Quicksand", sans-serif;
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        transition: all 0.3s;
+
+        img {
+            width: 28px;
+            height: 28px;
+            transition: transform 0.3s;
+        }
     }
 
     .category-image {
-        width: 100%;
-        height: 300px;
-        border-radius: 16px;
-        overflow: hidden;
+        width: 400px;
+        height: 400px;
         transition: all 0.3s;
+        overflow: hidden;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
         }
     }
 }
@@ -307,9 +322,5 @@
 
     .recipe-card {
         min-width: 100%;
-    }
-
-    .carousel-btn {
-        display: none;
     }
 }
