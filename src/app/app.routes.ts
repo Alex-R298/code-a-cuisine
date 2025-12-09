@@ -5,6 +5,7 @@ import { PerferencesComponent } from './landing-page/perferences/perferences.com
 import { LoadingComponent } from './landing-page/loading/loading.component';  // NEU
 import { RecipeResultsComponent } from './landing-page/recipe-results/recipe-results.component';
 import { RecipeViewComponent } from './landing-page/recipe-view/recipe-view.component';  // Recipe View!  // GEÄNDERT: mit :id Parameter
+import { CookbookComponent } from './landing-page/cookbook/cookbook.component';
 
 
 export const routes: Routes = [
@@ -13,5 +14,6 @@ export const routes: Routes = [
     { path: 'perferences/:id', component: PerferencesComponent },
      { path: 'loading/:id', component: LoadingComponent },  // NEU
   { path: 'recipe-results/:id', component: RecipeResultsComponent }, 
-   { path: 'recipe-view/:recipeId/:index', component: RecipeViewComponent }  // Recipe View!  // GEÄNDERT: mit :id Parameter
+   { path: 'recipe-view/:recipeId/:index', component: RecipeViewComponent },  // GEÄNDERT: mit :id Parameter
+   { path: 'cookbook', component: CookbookComponent },  // Wildcard route for a 404 page
 ];

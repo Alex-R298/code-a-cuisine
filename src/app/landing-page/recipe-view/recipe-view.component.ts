@@ -87,12 +87,16 @@ export class RecipeViewComponent implements OnInit {
     this.router.navigate(['/recipe-results', this.recipeId]);
   }
 
+  generateNewRecipe() {
+    this.router.navigate(['/generate-recipe']);
+  }
+
   giveHeart() {
     alert('❤️ Recipe loved!');
   }
 
   goToCookbook() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/cookbook']);
   }
 
   getStepTitle(instruction: string): string {
@@ -103,4 +107,10 @@ export class RecipeViewComponent implements OnInit {
   }
   return instruction.substring(0, 30) + '...';
 }
+
+  getChefImage(index: number): string {
+    return index % 2 === 0 
+      ? '../../../assets/img/Untitled design 2.png' 
+      : '../../../assets/img/Untitled design (3) 1.png';
+  }
 }

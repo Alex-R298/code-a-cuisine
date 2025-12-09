@@ -1,1 +1,74 @@
-<p>cookbook works!</p>
+<div class="cookbook-wrapper">
+  <div class="cookbook-container">
+    <!-- Header -->
+    <div class="cookbook-header">
+      <a class="back-button" (click)="goBack()">
+    <img src="../../../assets/img/Arrow 11.png" alt="">Back
+  </a>
+    </div>
+
+    <!-- Cookbook Content -->
+    <div class="cookbook-content">
+      <div class="top-section">
+        <div class="cookbook-intro">
+          <h1>Cookbook</h1>
+          <p>From quick bites to gourmet delights, explore them all in our ultimate cookbook and get inspired for your next culinary adventure.</p>
+        </div>
+
+        <!-- Most Liked Recipes Carousel -->
+        <div class="liked-recipes-section">
+          <div class="section-header">
+            <h2>Most liked recipes</h2>
+            <img src="../../../assets/img/favorite1.png" alt="">
+          </div>
+
+          <div class="carousel-container">
+          <!-- <button class="carousel-btn prev" (click)="previousSlide()" [disabled]="currentSlideIndex === 0">
+            ‹
+          </button> -->
+
+          <div class="carousel-wrapper">
+            <div class="carousel-track" [style.transform]="'translateX(-' + (currentSlideIndex * 50) + '%)'">
+              <div class="recipe-card" *ngFor="let recipe of likedRecipes; let i = index">
+                <div class="recipe-card-content" (click)="viewRecipe(recipe.id)">
+                  <div class="recipe-meta">
+                    <div class="recipe-time">
+                      <img src="../../../assets/img/schedule.png" alt="">
+                      <span>Cooking time: {{ recipe.cookingTime }}</span>
+                    </div>
+                    <div class="recipe-likes">
+                      <span class="heart">♥{{ recipe.likes }}</span>
+                    </div>
+                  </div>
+                  <h3>{{ recipe.title }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <button class="carousel-btn next" (click)="nextSlide()" [disabled]="currentSlideIndex >= likedRecipes.length - 2">
+            ›
+          </button> -->
+        </div>
+      </div>
+      </div>
+
+      <!-- Cuisine Categories -->
+      <div class="cuisine-categories">
+        <div class="category-card" *ngFor="let cuisine of recipes" (click)="browseCuisine(cuisine.title)">
+          <h3 class="category-title">{{ cuisine.title }}</h3>
+          <div class="category-image">
+            <img [src]="'assets/img/' + cuisine.img" [alt]="cuisine.title">
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate New Recipe Button -->
+      <div class="generate-section">
+        <a class="generate-btn" routerLink="/generate-recipe">
+          Generate new recipe <img src="../../../assets/img/Arrow 18 (1).png" alt="">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
