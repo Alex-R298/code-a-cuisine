@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { debounceTime, Subject, switchMap, of } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 import { RecipeService } from '../../services/recipe.service';
+import { IngredientsService } from '../../services/ingredients.service';
 
 @Component({
   selector: 'app-generate-recipe',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  providers: [RecipeService],
+  providers: [RecipeService, IngredientsService],
   templateUrl: './generate-recipe.component.html',
   styleUrl: './generate-recipe.component.scss'
 })
@@ -31,13 +31,16 @@ export class GenerateRecipeComponent implements OnInit {
   
   selectedServingSize = '';
   servingSizeInvalid = false;
-  currentRecipeId: string | null = null;  // NEU
+  currentRecipeId: string | null = null;
 
   ingredientInput = '';
   suggestions: string[] = [];
   showSuggestions = false;
+  inlineCompletion = ''; // NEU: Für den grauen Text
+  selectedSuggestionIndex = -1; // NEU: Für Arrow Navigation
+  
   private searchSubject = new Subject<string>();
-  private cache = new Map<string, string[]>();
+  isLoadingIngredients = true; // NEU: Loading state
 
   getDisplayUnit(unit: string): string {
     switch(unit) {
@@ -48,113 +51,32 @@ export class GenerateRecipeComponent implements OnInit {
     }
   }
 
-  private commonIngredients: { [key: string]: string[] } = {
-    'a': ['Apple', 'Avocado', 'Asparagus', 'Almond', 'Anchovy', 'Artichoke'],
-    'b': ['Banana', 'Basil', 'Broccoli', 'Butter', 'Beef', 'Bacon', 'Bell Pepper'],
-    'c': ['Carrot', 'Cheese', 'Chicken', 'Celery', 'Cucumber', 'Coconut', 'Cream'],
-    'd': ['Date', 'Dill', 'Duck', 'Dried Fruit'],
-    'e': ['Egg', 'Eggplant', 'Endive'],
-    'f': ['Fig', 'Fennel', 'Fish', 'Flour'],
-    'g': ['Garlic', 'Ginger', 'Grape', 'Green Beans'],
-    'h': ['Honey', 'Ham', 'Herbs'],
-    'i': ['Ice Cream', 'Iceberg Lettuce', 'Italian Sausage'],
-    'j': ['Jam', 'Jalapeño', 'Juice'],
-    'k': ['Kale', 'Ketchup', 'Kidney Beans'],
-    'l': ['Lemon', 'Lettuce', 'Lime', 'Leek'],
-    'm': ['Milk', 'Mushroom', 'Mustard', 'Meat', 'Mozzarella'],
-    'n': ['Noodles', 'Nutmeg', 'Nuts'],
-    'o': ['Onion', 'Orange', 'Oregano', 'Olive Oil', 'Olives'],
-    'p': ['Pasta', 'Pepper', 'Potato', 'Pork', 'Parsley', 'Peas'],
-    'q': ['Quinoa', 'Quail', 'Quince'],
-    'r': ['Rice', 'Rosemary', 'Radish', 'Red Onion'],
-    's': ['Salt', 'Sugar', 'Spinach', 'Salmon', 'Shrimp', 'Soy Sauce'],
-    't': ['Tomato', 'Thyme', 'Tofu', 'Turkey', 'Turmeric'],
-    'u': ['Udon Noodles', 'Ube', 'Urad Dal'],
-    'v': ['Vanilla', 'Vinegar', 'Vegetable Oil'],
-    'w': ['Watermelon', 'Walnut', 'Wheat', 'White Rice'],
-    'x': ['Xanthan Gum', 'Xinomavro Grape', 'Ximenia'],
-    'y': ['Yogurt', 'Yam', 'Yellow Pepper'],
-    'z': ['Zucchini', 'Zest', 'Za\'atar']
-  };
-
   constructor(
-    private http: HttpClient,
     private recipeService: RecipeService,
+    private ingredientsService: IngredientsService,
     private router: Router,
-    private route: ActivatedRoute  // NEU
+    private route: ActivatedRoute
   ) {
+    // Debounced search (300ms statt 400ms für schnellere Response)
     this.searchSubject.pipe(
-      debounceTime(400),
-      switchMap(value => {
-        console.log('Search value:', value);
-        
-        if (value.length === 0) {
-          this.showSuggestions = false;
-          this.suggestions = [];
-          return of(null);
-        }
-
-        const firstLetter = value.toLowerCase()[0];
-
-        if (value.length <= 2) {
-          if (this.commonIngredients[firstLetter]) {
-            this.suggestions = this.commonIngredients[firstLetter];
-            this.showSuggestions = this.suggestions.length > 0;
-            console.log('Local suggestions:', this.suggestions);
-          } else {
-            this.suggestions = [];
-            this.showSuggestions = false;
-          }
-          return of(null);
-        }
-
-        if (this.cache.has(value.toLowerCase())) {
-          console.log('From cache:', value);
-          this.suggestions = this.cache.get(value.toLowerCase())!;
-          this.showSuggestions = this.suggestions.length > 0;
-          return of(null);
-        }
-
-        console.log('Calling AI for:', value);
-        return this.http.post<any>(
-          'http://localhost:5678/webhook/ingredient-suggestions',
-          { input: value }
-        );
-      })
-    ).subscribe({
-      next: (response) => {
-        if (!response) return;
-
-        console.log('Response from n8n:', response);
-
-        if (response && response.output) {
-          try {
-            this.suggestions = JSON.parse(response.output);
-            
-            if (this.ingredientInput) {
-              this.cache.set(this.ingredientInput.toLowerCase(), this.suggestions);
-            }
-
-            this.showSuggestions = this.suggestions.length > 0;
-            console.log('Parsed suggestions:', this.suggestions);
-          } catch (e) {
-            console.error('Parse error:', e);
-            this.suggestions = [];
-            this.showSuggestions = false;
-          }
-        }
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        this.suggestions = [];
-        this.showSuggestions = false;
-      }
+      debounceTime(300)
+    ).subscribe(value => {
+      this.performLocalSearch(value);
     });
   }
 
-  // NEU: Lifecycle Hook
   async ngOnInit() {
-    // Check ob wir eine Recipe ID haben (wenn User zurück kommt)
+    // Lade Ingredients aus Firebase (EINMAL!)
+    try {
+      await this.ingredientsService.loadIngredients();
+      this.isLoadingIngredients = false;
+      console.log('✅ Ingredients ready for autocomplete');
+    } catch (error) {
+      console.error('Failed to load ingredients:', error);
+      this.isLoadingIngredients = false;
+    }
+
+    // Check ob wir eine Recipe ID haben
     const recipeId = this.route.snapshot.queryParams['recipeId'];
     
     if (recipeId) {
@@ -164,7 +86,6 @@ export class GenerateRecipeComponent implements OnInit {
     }
   }
 
-  // NEU: Lade Recipe aus Firestore
   async loadRecipe(recipeId: string) {
     try {
       const recipe = await this.recipeService.getRecipe(recipeId);
@@ -183,6 +104,129 @@ export class GenerateRecipeComponent implements OnInit {
     }
   }
 
+  // NEU: Lokale Suche ohne API Calls!
+  performLocalSearch(value: string) {
+    if (!value || value.length === 0) {
+      this.suggestions = [];
+      this.showSuggestions = false;
+      this.inlineCompletion = '';
+      this.selectedSuggestionIndex = -1;
+      return;
+    }
+
+    // Suche Suggestions
+    this.suggestions = this.ingredientsService.searchIngredients(value);
+    this.showSuggestions = this.suggestions.length > 0;
+    this.selectedSuggestionIndex = -1; // Reset bei neuer Suche
+
+    // Hole erste Match für Inline-Completion (grauer Text)
+    const firstMatch = this.ingredientsService.getFirstMatch(value);
+    
+    if (firstMatch && firstMatch.toLowerCase().startsWith(value.toLowerCase())) {
+      // Zeige nur den fehlenden Teil
+      this.inlineCompletion = firstMatch.substring(value.length);
+    } else {
+      this.inlineCompletion = '';
+    }
+
+    console.log('Search:', value, '| Suggestions:', this.suggestions.length, '| Inline:', this.inlineCompletion);
+  }
+
+  onIngredientInput(event: any) {
+    const value = event.target.value;
+    this.ingredientInput = value;
+    this.searchSubject.next(value);
+  }
+
+  // NEU: Handle Tab/Enter/Arrow keys für Navigation
+  onIngredientKeyDown(event: KeyboardEvent) {
+    // Arrow Down - Navigate nach unten
+    if (event.key === 'ArrowDown' && this.showSuggestions) {
+      event.preventDefault();
+      this.selectedSuggestionIndex = 
+        (this.selectedSuggestionIndex + 1) % this.suggestions.length;
+      this.updateInlineFromSelection();
+      return;
+    }
+    
+    // Arrow Up - Navigate nach oben
+    if (event.key === 'ArrowUp' && this.showSuggestions) {
+      event.preventDefault();
+      this.selectedSuggestionIndex = 
+        this.selectedSuggestionIndex <= 0 
+          ? this.suggestions.length - 1 
+          : this.selectedSuggestionIndex - 1;
+      this.updateInlineFromSelection();
+      return;
+    }
+    
+    // Tab oder Pfeil rechts → Übernimm Inline-Completion
+    if ((event.key === 'Tab' || event.key === 'ArrowRight') && this.inlineCompletion) {
+      event.preventDefault();
+      
+      // Wenn etwas selektiert ist, nimm das
+      if (this.selectedSuggestionIndex >= 0) {
+        this.selectSuggestion(this.suggestions[this.selectedSuggestionIndex]);
+      } else {
+        // Sonst nimm den inline completion
+        this.ingredientInput = this.ingredientInput + this.inlineCompletion;
+        this.inlineCompletion = '';
+        this.showSuggestions = false;
+      }
+      return;
+    }
+    
+    // Enter → Wähle selektierte oder erste Suggestion
+    if (event.key === 'Enter' && this.suggestions.length > 0) {
+      event.preventDefault();
+      
+      if (this.selectedSuggestionIndex >= 0) {
+        this.selectSuggestion(this.suggestions[this.selectedSuggestionIndex]);
+      } else {
+        this.selectSuggestion(this.suggestions[0]);
+      }
+      return;
+    }
+
+    // Escape → Schließe Suggestions
+    if (event.key === 'Escape') {
+      this.showSuggestions = false;
+      this.inlineCompletion = '';
+      this.selectedSuggestionIndex = -1;
+    }
+  }
+
+  // NEU: Update Inline Completion basierend auf Selektion
+  updateInlineFromSelection() {
+    if (this.selectedSuggestionIndex >= 0 && this.selectedSuggestionIndex < this.suggestions.length) {
+      const selected = this.suggestions[this.selectedSuggestionIndex];
+      if (selected.toLowerCase().startsWith(this.ingredientInput.toLowerCase())) {
+        this.inlineCompletion = selected.substring(this.ingredientInput.length);
+      }
+    }
+  }
+
+  selectSuggestion(suggestion: string) {
+    this.ingredientInput = suggestion;
+    this.showSuggestions = false;
+    this.inlineCompletion = '';
+    this.selectedSuggestionIndex = -1;
+  }
+
+  get limitedSuggestions(): string[] {
+    return this.suggestions.slice(0, 3); // Top 5 statt 3
+  }
+
+  closeSuggestions() {
+    setTimeout(() => {
+      this.showSuggestions = false;
+      this.inlineCompletion = '';
+      this.selectedSuggestionIndex = -1;
+    }, 200);
+  }
+
+  // Rest bleibt gleich...
+  
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
@@ -190,12 +234,6 @@ export class GenerateRecipeComponent implements OnInit {
   selectUnit(unit: string) {
     this.selectedUnit = unit;
     this.isDropdownOpen = false;
-  }
-
-  onIngredientInput(event: any) {
-    const value = event.target.value;
-    this.ingredientInput = value;
-    this.searchSubject.next(value);
   }
 
   onServingSizeInput(event: any) {
@@ -211,21 +249,6 @@ export class GenerateRecipeComponent implements OnInit {
     this.listIngredients[index].amount = value;
     this.listIngredients[index].isAmountInvalid = false;
     event.target.value = value;
-  }
-
-  selectSuggestion(suggestion: string) {
-    this.ingredientInput = suggestion;
-    this.showSuggestions = false;
-  }
-
-  get limitedSuggestions(): string[] {
-    return this.suggestions.slice(0, 3);
-  }
-
-  closeSuggestions() {
-    setTimeout(() => {
-      this.showSuggestions = false;
-    }, 200);
   }
 
   addIngredient() {
@@ -249,6 +272,7 @@ export class GenerateRecipeComponent implements OnInit {
       this.selectedUnit = 'gram';
       this.servingSizeInvalid = false;
       this.showSuggestions = false;
+      this.inlineCompletion = '';
     }
   }
 
@@ -284,7 +308,6 @@ export class GenerateRecipeComponent implements OnInit {
     this.listIngredients[index].isDropdownOpen = false;
   }
 
-  // GEÄNDERT: Update wenn Recipe schon existiert, sonst neu erstellen
   async saveAndContinue() {
     if (this.listIngredients.length === 0) {
       alert('Please add at least one ingredient!');
@@ -296,7 +319,6 @@ export class GenerateRecipeComponent implements OnInit {
       
       let recipeId: string;
       
-      // Wenn Recipe schon existiert, update, sonst neu erstellen
       if (this.currentRecipeId) {
         await this.recipeService.updateIngredients(
           this.currentRecipeId,
@@ -312,7 +334,6 @@ export class GenerateRecipeComponent implements OnInit {
         console.log('New recipe created with ID:', recipeId);
       }
 
-      // Navigate zu Preferences
       this.router.navigate(['/perferences', recipeId]);
     } catch (error) {
       console.error('Error saving ingredients:', error);

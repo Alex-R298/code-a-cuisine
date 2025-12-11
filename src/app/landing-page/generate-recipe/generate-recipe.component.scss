@@ -61,6 +61,9 @@ section {
     input {
         padding: 12px;
         font-size: 16px;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 400;
+        color: #333333;
         border: 0px;
         border-radius: 20px;
         width: 300px;
@@ -77,6 +80,53 @@ section {
 // Autocomplete Wrapper
 .autocomplete-wrapper {
     position: relative;
+}
+
+// NEU: Inline Autocomplete Styles
+.input-with-completion {
+    position: relative;
+    width: 300px;
+    background-color: #FAF0E6CC;
+    border-radius: 20px;
+}
+
+.completion-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px;
+    font-size: 16px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 400;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.invisible-text {
+    opacity: 0 !important;
+    color: transparent !important;
+}
+
+.gray-completion {
+    color: #AAAAAA !important;
+    opacity: 0.4 !important;
+    font-weight: 300 !important;
+}
+
+.main-input {
+    position: relative;
+    z-index: 2;
+    background-color: transparent !important;
+    color: #333333;
+    font-size: 16px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 400;
 }
 
 // Suggestions Dropdown
@@ -128,8 +178,10 @@ section {
     &:nth-child(1) { animation-delay: 0s; }
     &:nth-child(2) { animation-delay: 0.05s; }
     &:nth-child(3) { animation-delay: 0.1s; }
+    &:nth-child(4) { animation-delay: 0.15s; }
+    &:nth-child(5) { animation-delay: 0.2s; }
 
-    &:hover {
+    &:hover, &.selected {
         background-color: #FAF0E6CC;
     }
 }

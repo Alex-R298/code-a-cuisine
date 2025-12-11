@@ -9,13 +9,31 @@
             <label for="" class="input-label">
                 <span>Ingredient</span>
                 <div class="autocomplete-wrapper">
-                    <input type="text" [(ngModel)]="ingredientInput" (input)="onIngredientInput($event)"
-                        (blur)="closeSuggestions()" placeholder="">
+                    <!-- Wrapper für Input + Inline-Completion -->
+                    <div class="input-with-completion">
+                        <!-- Grauer Inline-Text (dahinter) -->
+                        <div class="completion-background" *ngIf="inlineCompletion">
+                            <span class="invisible-text">{{ ingredientInput }}</span><span class="gray-completion">{{ inlineCompletion }}</span>
+                        </div>
+                        
+                        <!-- Hauptinput (transparent background) -->
+                        <input 
+                            type="text" 
+                            [(ngModel)]="ingredientInput" 
+                            (input)="onIngredientInput($event)"
+                            (keydown)="onIngredientKeyDown($event)"
+                            (blur)="closeSuggestions()" 
+                            placeholder=""
+                            class="main-input">
+                    </div>
 
                     <!-- Suggestions Dropdown -->
                     <div class="suggestions-dropdown" *ngIf="showSuggestions">
-                        <div class="suggestion-item" *ngFor="let suggestion of limitedSuggestions"
-                            (mousedown)="selectSuggestion(suggestion)">
+                        <div class="suggestion-item" 
+                            *ngFor="let suggestion of limitedSuggestions; let i = index"
+                            [class.selected]="i === selectedSuggestionIndex"
+                            (mousedown)="selectSuggestion(suggestion)"
+                            (mouseenter)="selectedSuggestionIndex = i">
                             {{ suggestion }}
                         </div>
                     </div>
