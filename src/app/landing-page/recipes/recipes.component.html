@@ -1,1 +1,17 @@
-<p>recipes works!</p>
+<!-- recipes.component.html -->
+<div class="recipes-wrapper">
+    <a class="back-button" routerLink="/cookbook">
+            <img src="../../../assets/img/Arrow 11.png" alt="">Coockbook
+        </a>
+        <div class="header-button">
+        <button class="generate-button" routerLink="/generate-recipe">
+        Generate a recipe
+      </button>
+      </div>
+    <div class="recipes-container">
+        <div *ngIf="selectedCategory" class="cuisine-header">
+            <img [src]="'assets/img/' + selectedCategory.img" [alt]="selectedCategory.title">
+            <h2>{{ selectedCategory.title }}</h2>
+        </div>
+    </div>
+</div>

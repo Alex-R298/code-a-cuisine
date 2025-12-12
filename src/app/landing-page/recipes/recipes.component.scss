@@ -1,0 +1,77 @@
+.recipes-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-top: 120px; // Platz für die Navbar
+}
+
+.recipes-container {
+    
+}
+
+.back-button {
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #1E5515;
+    font-size: 18px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    cursor: pointer;
+    font-family: "Quicksand", sans-serif;
+
+    img {
+        width: 20px;
+    }
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.header-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    max-width: 1295px;
+}
+
+.generate-button {
+        width: 258px;
+        height: 62px;
+        background-color: #396039;
+        color: #FAF0E6;
+        font-size: 24px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+
+        &:hover {
+            background-color: #3a723a;
+        }
+    }
+
+
+.cuisine-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;  // Optional: Abstand nach unten
+
+    img {
+        width: 1152px;
+        height: 148px;
+    }
+
+    h2 {
+        position: absolute;
+        color: #10310B;
+        font-size: 40px;
+        font-weight: 700;
+        margin: 0;
+        font-family: 'Quicksand', sans-serif;
+    }
+}

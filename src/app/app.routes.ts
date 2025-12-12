@@ -6,6 +6,7 @@ import { LoadingComponent } from './landing-page/loading/loading.component';  //
 import { RecipeResultsComponent } from './landing-page/recipe-results/recipe-results.component';
 import { RecipeViewComponent } from './landing-page/recipe-view/recipe-view.component';  // Recipe View!  // GEÄNDERT: mit :id Parameter
 import { CookbookComponent } from './landing-page/cookbook/cookbook.component';
+import { RecipesComponent } from './landing-page/recipes/recipes.component';
 
 
 export const routes: Routes = [
@@ -16,4 +17,5 @@ export const routes: Routes = [
   { path: 'recipe-results/:id', component: RecipeResultsComponent }, 
    { path: 'recipe-view/:recipeId/:index', component: RecipeViewComponent },  // GEÄNDERT: mit :id Parameter
    { path: 'cookbook', component: CookbookComponent },  // Wildcard route for a 404 page
+   { path: 'recipes', component: RecipesComponent },
 ];

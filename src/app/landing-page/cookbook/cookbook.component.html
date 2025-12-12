@@ -53,7 +53,7 @@
 
       <!-- Cuisine Categories -->
       <div class="cuisine-categories">
-        <div class="category-card" *ngFor="let cuisine of recipes" (click)="browseCuisine(cuisine.title)">
+        <div class="category-card" *ngFor="let cuisine of recipes" (click)="browseCuisine(cuisine.id)">
           <h3 class="category-title">{{ cuisine.title }} <img [src]="'assets/img/' + cuisine.imgIcon" [alt]="cuisine.title"></h3>
           <div class="category-image">
             <img [src]="'assets/img/' + cuisine.img" [alt]="cuisine.title">

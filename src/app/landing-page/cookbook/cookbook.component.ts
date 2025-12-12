@@ -18,14 +18,14 @@ interface LikedRecipe {
   styleUrl: './cookbook.component.scss'
 })
 export class CookbookComponent implements OnInit {
-  recipes: { img: string, title: string, imgIcon: string }[] = [
-    { img: "card.png", title: "Italian cuisine ", imgIcon: "Italian-icon.png" },
-    { img: "card (1).png", title: "German cuisine ", imgIcon: "German-icon.png" },
-    { img: "card (2).png", title: "Japanese cuisine ", imgIcon: "Japanese-icon.png" },
-    { img: "card (3).png", title: "Gourmet cuisine ", imgIcon: "Gourmet-icon.png" },
-    { img: "card (4).png", title: "Indian cuisine ", imgIcon: "Indian-icon.png" },
-    { img: "card (5).png", title: "Fusion cuisine ", imgIcon: "Fusion-icon.png" }
-  ];
+  recipes: { id: string, img: string, title: string, imgIcon: string }[] = [
+  { id: "italian", img: "card.png", title: "Italian cuisine", imgIcon: "Italian-icon.png" },
+  { id: "german", img: "card (1).png", title: "German cuisine", imgIcon: "German-icon.png" },
+  { id: "japanese", img: "card (2).png", title: "Japanese cuisine", imgIcon: "Japanese-icon.png" },
+  { id: "gourmet", img: "card (3).png", title: "Gourmet cuisine", imgIcon: "Gourmet-icon.png" },
+  { id: "indian", img: "card (4).png", title: "Indian cuisine", imgIcon: "Indian-icon.png" },
+  { id: "fusion", img: "card (5).png", title: "Fusion cuisine", imgIcon: "Fusion-icon.png" }
+];
 
   likedRecipes: LikedRecipe[] = [];
   currentSlideIndex = 0;
@@ -115,7 +115,7 @@ export class CookbookComponent implements OnInit {
     this.location.back();
   }
 
-  browseCuisine(cuisine: string) {
-    alert(`Browsing ${cuisine} - Feature coming soon!`);
-  }
+  browseCuisine(cuisineId: string) {
+  this.router.navigate(['/recipes'], { queryParams: { category: cuisineId } });
+}
 }

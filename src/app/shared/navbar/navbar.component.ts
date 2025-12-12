@@ -15,6 +15,7 @@ export class NavbarComponent {
   isPerferencesPage = false;
   isRecipeViewPage = false;
   isCookbookPage = false;
+  isRecipes = false;
 
   constructor(private router: Router) {
     this.router.events.pipe(
@@ -24,6 +25,7 @@ export class NavbarComponent {
       this.isPerferencesPage = this.router.url.includes('/perferences');
       this.isRecipeViewPage = this.router.url.includes('/recipe-view');
       this.isCookbookPage = this.router.url.includes('/cookbook');
+      this.isRecipes = this.router.url.includes('/recipes');
       
     });
   }
