@@ -1,17 +1,55 @@
-<!-- recipes.component.html -->
 <div class="recipes-wrapper">
     <a class="back-button" routerLink="/cookbook">
-            <img src="../../../assets/img/Arrow 11.png" alt="">Coockbook
-        </a>
-        <div class="header-button">
+        <img src="../../../assets/img/Arrow 11.png" alt="">Cookbook
+    </a>
+    <div class="header-button">
         <button class="generate-button" routerLink="/generate-recipe">
-        Generate a recipe
-      </button>
-      </div>
+            Generate a recipe
+        </button>
+    </div>
     <div class="recipes-container">
         <div *ngIf="selectedCategory" class="cuisine-header">
             <img [src]="'assets/img/' + selectedCategory.img" [alt]="selectedCategory.title">
             <h2>{{ selectedCategory.title }}</h2>
+        </div>
+
+        <div class="recipe-list">
+            <div class="recipe-card" *ngFor="let recipe of filteredRecipes"
+                (click)="viewRecipe(recipe.parentDocId, recipe, $event)">
+                <div class="recipe-number">{{ recipe.recipeIndex + 1 }}.</div>
+                <div class="recipe-card-content">
+                    <div class="recipe-meta">
+                        <div class="recipe-time">
+                            <img src="../../../assets/img/schedule.png" alt="">
+                            <span>Cooking time: {{ recipe.cookingTime }}</span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="tag" *ngIf="recipe.cookingTimePreference">{{ recipe.cookingTimePreference
+                                }}</span>
+                            <span class="heart">
+                                <img src="../../../assets/img/favorite.png" alt="">{{ recipe.likes }}
+                            </span>
+                        </div>
+                    </div>
+                    <h3>{{ recipe.title }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" *ngIf="totalPages > 1">
+            <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+                &lt;
+            </button>
+
+            <button *ngFor="let page of getPageNumbers()" class="page-btn" [class.active]="page === currentPage"
+                [disabled]="page === -1" (click)="page !== -1 && goToPage(page)">
+                {{ page === -1 ? '...' : page }}
+            </button>
+
+            <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+                &gt;
+            </button>
         </div>
     </div>
 </div>

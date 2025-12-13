@@ -3,40 +3,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { CommonModule } from '@angular/common';
 
-interface DetailedRecipe {
-  title: string;
-  description: string;
-  prepTime: string;
-  cookTime: string;
-  totalTime?: string;
-  servings: number;
-  difficulty: string;
-  ingredients: string[];
-  instructions: string[];
-  tips?: string[];
-  nutrition: {
-    calories: string;
-    protein: string;
-    carbs: string;
-    fat: string;
-  };
-}
-
 @Component({
-  selector: 'app-recipe-view',
+  selector: 'app-recipe-detail',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './recipe-view.component.html',
-  styleUrl: './recipe-view.component.scss'
+  templateUrl: './recipe-detail.component.html',
+  styleUrl: './recipe-detail.component.scss'
 })
-export class RecipeViewComponent implements OnInit {
-  recipe: DetailedRecipe | null = null;
+export class RecipeDetailComponent implements OnInit {
+  recipe: any = null;
   recipeId: string = '';
   recipeIndex: number = 0;
   loading = true;
   error = false;
+  cuisineId: string = '';
 
-  // Split ingredients
+  // ← NEU: Ingredients Arrays hinzufügen
   userIngredients: string[] = [];
   extraIngredients: string[] = [];
 
@@ -49,6 +31,7 @@ export class RecipeViewComponent implements OnInit {
   async ngOnInit() {
     this.recipeId = this.route.snapshot.params['recipeId'];
     this.recipeIndex = parseInt(this.route.snapshot.params['index']);
+    this.cuisineId = this.route.snapshot.queryParams['cuisine'] || '';
 
     try {
       const fullRecipe = await this.recipeService.getRecipe(this.recipeId);
@@ -56,23 +39,23 @@ export class RecipeViewComponent implements OnInit {
       if (fullRecipe?.generatedRecipes?.[this.recipeIndex]) {
         this.recipe = fullRecipe.generatedRecipes[this.recipeIndex];
         
-        // Split ingredients based on user's original ingredients
+        // ← NEU: Ingredients aufteilen (falls vorhanden)
         if (fullRecipe.ingredients && this.recipe?.ingredients) {
           const userIngNames = fullRecipe.ingredients.map(ing => ing.name.toLowerCase());
           
-          this.userIngredients = this.recipe.ingredients.filter(ing => {
+          this.userIngredients = this.recipe.ingredients.filter((ing: any) => {
             return userIngNames.some(userName => 
               ing.toLowerCase().includes(userName)
             );
           });
           
-          this.extraIngredients = this.recipe.ingredients.filter(ing => {
+          this.extraIngredients = this.recipe.ingredients.filter((ing: any) => {
             return !userIngNames.some(userName => 
               ing.toLowerCase().includes(userName)
             );
           });
         } else {
-          // Fallback: alle Zutaten als extra
+          // Wenn keine User-Ingredients vorhanden, zeige alle als extra
           this.userIngredients = [];
           this.extraIngredients = this.recipe?.ingredients || [];
         }
@@ -89,7 +72,11 @@ export class RecipeViewComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/recipe-results', this.recipeId]);
+    if (this.cuisineId) {
+      this.router.navigate(['/recipes'], { queryParams: { category: this.cuisineId } });
+    } else {
+      this.router.navigate(['/cookbook']);
+    }
   }
 
   generateNewRecipe() {

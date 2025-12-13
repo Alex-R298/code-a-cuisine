@@ -7,15 +7,20 @@ import { RecipeResultsComponent } from './landing-page/recipe-results/recipe-res
 import { RecipeViewComponent } from './landing-page/recipe-view/recipe-view.component';  // Recipe View!  // GEÄNDERT: mit :id Parameter
 import { CookbookComponent } from './landing-page/cookbook/cookbook.component';
 import { RecipesComponent } from './landing-page/recipes/recipes.component';
+import { RecipeDetailComponent } from './landing-page/recipe-detail/recipe-detail.component';
 
 
 export const routes: Routes = [
-    { path: '', component: LandingPageComponent }, 
-    { path: 'generate-recipe', component: GenerateRecipeComponent }, 
-    { path: 'perferences/:id', component: PerferencesComponent },
-     { path: 'loading/:id', component: LoadingComponent },  // NEU
-  { path: 'recipe-results/:id', component: RecipeResultsComponent }, 
+   { path: '', component: LandingPageComponent },
+   { path: 'generate-recipe', component: GenerateRecipeComponent },
+   { path: 'perferences/:id', component: PerferencesComponent },
+   { path: 'loading/:id', component: LoadingComponent },  // NEU
+   { path: 'recipe-results/:id', component: RecipeResultsComponent },
    { path: 'recipe-view/:recipeId/:index', component: RecipeViewComponent },  // GEÄNDERT: mit :id Parameter
    { path: 'cookbook', component: CookbookComponent },  // Wildcard route for a 404 page
    { path: 'recipes', component: RecipesComponent },
+   {
+      path: 'recipe-detail/:recipeId/:index',
+      component: RecipeDetailComponent
+   }
 ];

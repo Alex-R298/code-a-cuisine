@@ -1,0 +1,139 @@
+<a class="back-button" (click)="goBack()">
+  <img src="../../../assets/img/Arrow 11.png" alt=""> Recipes
+</a>
+
+<div class="recipe-view-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading recipe...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <h2>Oops! Recipe not found</h2>
+    <button (click)="goBack()">Back to Results</button>
+  </div>
+
+  <!-- Recipe Content -->
+  <div *ngIf="recipe && !loading" class="recipe-content">
+    <!-- Back Button -->
+
+
+    <!-- Header -->
+    <div class="recipe-header">
+      <div class="header-top">
+        <div class="cooking-info">
+          <span class="cooking-time">
+            <img src="../../../assets/img/schedule.png" alt="">
+            Cooking time: {{ recipe.cookTime }}
+          </span>
+        </div>
+      </div>
+
+      <div class="header-content">
+        <div class="left-content">
+          <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+          <div class="cooking-persons">
+            <span class="person-title">Cooking person: {{ recipe.servings }}</span>
+            <span class="chef-badge"><img src="../../../assets/img/Untitled design 2.png" alt=""> Chef 1</span>
+            <span class="chef-badge chef-2"><img src="../../../assets/img/Untitled design (3) 1.png" alt=""> Chef
+              2</span>
+          </div>
+        </div>
+
+        <!-- Nutritional Information -->
+        <div class="nutrition-card" *ngIf="recipe.nutrition">
+          <div class="tags">
+            <span class="tag">Vegetarian</span>
+            <span class="tag">Quick</span>
+            <span class="tag tag-favorite"><img src="../../../assets/img/favorite.png" alt="">66</span>
+          </div>
+          <p>Nutritional information</p>
+          <div class="nutrition-grid">
+            <div class="nutrition-item">
+              <span class="label">Energie</span>
+              <span class="value">{{ recipe.nutrition.calories }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Protein</span>
+              <span class="value">{{ recipe.nutrition.protein }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Fat</span>
+              <span class="value">{{ recipe.nutrition.fat }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Carbs</span>
+              <span class="value">{{ recipe.nutrition.carbs }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ingredients Section -->
+    <div class="ingredients-section">
+      <div class="section-header">
+        <img src="../../../assets/img/header-8.png" alt="">
+        <h2>Ingredients</h2>
+
+      </div>
+
+      <div class="ingredients-columns">
+        <!-- Your Ingredients -->
+        <div class="ingredients-column">
+          <h3>Your ingredients</h3>
+          <ul>
+            <li *ngFor="let ingredient of userIngredients">
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Extra Ingredients -->
+        <div class="ingredients-column" *ngIf="extraIngredients.length > 0">
+          <h3>Extra ingredients</h3>
+          <ul>
+            <li *ngFor="let ingredient of extraIngredients">
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Directions Section -->
+    <div class="directions-section">
+      <div class="section-header">
+        <img src="../../../assets/img/header-3.png" alt="">
+        <h2 class="direction-center">Directions</h2>
+      </div>
+
+      <div class="directions-steps">
+        <div class="direction-step" *ngFor="let instruction of recipe.instructions; let i = index">
+          <div class="step-header">
+            <span class="step-number">{{ i + 1 }}.</span>
+            <span class="step-title">{{ getStepTitle(instruction) }}</span>
+            <span class="chef-badge" [class.chef-2]="i % 2 === 1">
+              <img [src]="getChefImage(i)" alt="Chef">
+              Chef {{ i % 2 === 0 ? '1' : '2' }}
+            </span>
+          </div>
+          <p class="step-description">{{ instruction }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="recipe-footer">
+      <p>Find inspiration for your next culinary adventure!</p>
+      <button class="cookbook-button" (click)="goToCookbook()">
+        Cookbook
+      </button>
+    </div>
+
+    <a class="generate-button" (click)="generateNewRecipe()">
+      Generate new recipie <img src="../../../assets/img/Arrow 18 (1).png" alt="">
+</a>

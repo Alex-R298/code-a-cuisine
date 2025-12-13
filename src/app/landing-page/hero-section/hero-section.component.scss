@@ -108,3 +108,70 @@ section {
         }
     }
 }
+
+@media (max-width: 375px) {
+    .text-content {
+        margin-top: 7rem;
+        padding: 12px;
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h1 {
+            width: 222px;
+            font-size: 64px;
+        }
+
+        button {
+            width: 119px;
+            font-size: 16px;
+        }
+
+        div {
+            flex-direction: column;
+            padding: 12px;
+
+            h3 {
+                width: 164px;
+                font-size: 24px;
+            }
+        }
+    }
+
+    .image-content {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: calc(303px * 3 - 40px); // 3 Bilder minus 2x 20px Überlappung
+        overflow-x: hidden; // NUR horizontal abschneiden
+        overflow-y: visible; // Vertikal alles anzeigen
+        width: 100%;
+        align-items: flex-end;
+
+        img {
+            width: 303px;
+            height: 303px;
+            object-fit: cover;
+            position: relative;
+            margin-left: auto;
+            margin-right: -151.5px;
+            margin-bottom: -20px;
+
+            &:nth-child(1) {
+                z-index: 1;
+            }
+
+            &:nth-child(2) {
+                top: 0;
+                z-index: 2;
+            }
+
+            &:nth-child(3) {
+                top: 0;
+                z-index: 3;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
