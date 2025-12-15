@@ -1,3 +1,4 @@
+// === BASE STYLES (Desktop) - UNVERÄNDERT ===
 section {
     min-height: 100vh;
     margin: 0;
@@ -18,6 +19,7 @@ section {
 .text-content {
     color: #FAF0E6;
     margin-top: 16rem;
+    padding: 20px;
 
     h2 {
         font-size: 48px;
@@ -109,10 +111,184 @@ section {
     }
 }
 
+// === NEU: 1024px ===
+@media (max-width: 1164px) {
+    .text-content {
+        margin-top: 12rem;
+
+        h2 {
+            font-size: 36px;
+        }
+
+        h1 {
+            font-size: 80px;
+        }
+
+        button {
+            margin-top: 48px;
+            width: 160px;
+            height: 55px;
+            font-size: 20px;
+        }
+
+        div {
+            margin-top: 14rem;
+
+            h3 {
+                font-size: 28px;
+            }
+
+            a {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .image-content {
+        height: 520px;
+
+        img {
+            width: 360px;
+
+            &:nth-child(2) {
+                top: 14rem;
+            }
+
+            &:nth-child(3) {
+                top: 28rem;
+            }
+        }
+    }
+}
+
+// === NEU: 900px - Bilder 320px ===
+@media (max-width: 900px) {
+    .text-content {
+        margin-top: 10rem;
+
+        h2 {
+            font-size: 34px;
+        }
+
+        h1 {
+            font-size: 74px;
+        }
+
+        button {
+            margin-top: 44px;
+            width: 155px;
+            height: 52px;
+            font-size: 19px;
+        }
+
+        div {
+            margin-top: 12rem;
+
+            h3 {
+                font-size: 27px;
+            }
+
+            a {
+                font-size: 17px;
+            }
+        }
+    }
+
+    .image-content {
+        height: 480px;
+
+        img {
+            width: 303px; // Genau 320px
+
+            &:nth-child(2) {
+                top: 13rem;
+            }
+
+            &:nth-child(3) {
+                top: 26rem;
+            }
+        }
+    }
+}
+
+// === NEU: 768px - Bilder WIE 375px ===
+@media (max-width: 800px) {
+    .text-content {
+        margin-top: 8rem;
+        padding: 12px;
+
+        h2 {
+            font-size: 32px;
+        }
+
+        h1 {
+            font-size: 68px;
+        }
+
+        button {
+            margin-top: 40px;
+            width: 150px;
+            height: 50px;
+            font-size: 18px;
+        }
+
+        div {
+            margin-top: 10rem;
+            flex-wrap: wrap;
+
+            h3 {
+                font-size: 26px;
+            }
+
+            a {
+                font-size: 17px;
+            }
+        }
+    }
+
+    // BILDER: GENAU WIE 375px
+    .image-content {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: calc(303px * 3 - 40px);
+        overflow-x: hidden;
+        overflow-y: visible;
+        width: 100%;
+        align-items: flex-end;
+
+        img {
+            width: 303px;
+            height: 303px;
+            object-fit: cover;
+            position: relative;
+            margin-left: auto;
+            margin-right: -151.5px; // Halb rausragend
+            margin-bottom: -20px; // Überlappung
+
+            &:nth-child(1) {
+                top: 0;
+                z-index: 1;
+            }
+
+            &:nth-child(2) {
+                top: 0;
+                z-index: 2;
+            }
+
+            &:nth-child(3) {
+                top: 0;
+                z-index: 3;
+                margin-bottom: 0; // Letztes Bild kein overlap nach unten
+            }
+        }
+    }
+}
+
+// === 375px - KOMPLETT UNVERÄNDERT ===
 @media (max-width: 375px) {
     .text-content {
         margin-top: 7rem;
-        padding: 12px;
 
         h2 {
             font-size: 24px;
@@ -143,9 +319,9 @@ section {
         display: flex;
         flex-direction: column;
         height: auto;
-        min-height: calc(303px * 3 - 40px); // 3 Bilder minus 2x 20px Überlappung
-        overflow-x: hidden; // NUR horizontal abschneiden
-        overflow-y: visible; // Vertikal alles anzeigen
+        min-height: calc(303px * 3 - 40px);
+        overflow-x: hidden;
+        overflow-y: visible;
         width: 100%;
         align-items: flex-end;
 

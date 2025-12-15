@@ -31,6 +31,7 @@
   }
 }
 
+// === BASE STYLES (Desktop) ===
 .recipes-overview {
   max-width: 1440px;
   margin: 0 auto;
@@ -45,7 +46,6 @@
 
 .header {
   margin-bottom: 60px;
-
 
   h1 {
     font-size: 54px;
@@ -67,6 +67,7 @@
   .tags {
     display: flex;
     gap: 12px;
+    flex-wrap: wrap;
 
     .tag {
       background: #FAF0E6;
@@ -91,10 +92,19 @@
   }
 }
 
+// Desktop: Zeige nur desktop-logo
+.desktop-logo {
+  display: block;
+}
+
+.mobile-logo {
+  display: none;
+}
 
 .recipe-cards {
   display: flex;
   justify-content: space-between;
+  gap: 24px;
   margin-bottom: 50px;
 }
 
@@ -184,6 +194,8 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s;
+    border: none;
+    font-family: "Quicksand", sans-serif;
 
     &:hover {
       background: rgba(250, 240, 230, 0.3);
@@ -191,12 +203,265 @@
   }
 }
 
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 36px;
+// === 1024px - Logo Position wechseln ===
+@media (max-width: 1024px) {
+  .recipes-overview {
+    margin-top: 150px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    margin-bottom: 60px;
+
+    h1 {
+      font-size: 46px;
+      margin-bottom: 20px; // Platz für mobile-logo
+    }
+
+    .subtitle {
+      font-size: 22px;
+      margin-top: 20px; // Platz nach mobile-logo
+    }
+
+    .tags .tag {
+      font-size: 16px;
+    }
+  }
+
+  // Desktop Logo verstecken
+  .desktop-logo {
+    display: none;
+  }
+
+  // Mobile Logo zeigen (zwischen h1 und subtitle)
+  .mobile-logo {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .logo img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
   }
 
   .recipe-cards {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .recipe-card {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .generate-new {
+    text-align: center;
+  }
+}
+
+// === 900px ===
+@media (max-width: 900px) {
+  .recipes-overview {
+    margin-top: 120px;
+  }
+
+  .header {
+    h1 {
+      font-size: 42px;
+    }
+
+    .subtitle {
+      font-size: 20px;
+    }
+  }
+
+  .logo img {
+    max-width: 450px;
+  }
+
+  .recipe-card {
+    max-width: 450px;
+    padding: 28px 20px;
+
+    .recipe-title {
+      font-size: 28px;
+    }
+
+    .recipe-meta .cooking-time {
+      font-size: 18px;
+    }
+  }
+}
+
+// === 768px ===
+@media (max-width: 768px) {
+  .recipe-results-container {
+    padding: 30px 16px;
+  }
+
+  .recipes-overview {
+    margin-top: 100px;
+  }
+
+  .header {
+    margin-bottom: 40px;
+
+    h1 {
+      font-size: 38px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+    }
+
+    .tags .tag {
+      font-size: 16px;
+      padding: 5px 14px;
+    }
+  }
+
+  .logo img {
+    max-width: 400px;
+  }
+
+  .recipe-card {
+    max-width: 100%;
+    padding: 24px 18px;
+
+    .card-header {
+      .recipe-icon {
+        width: 32px;
+        height: 22px;
+      }
+
+      .recipe-number {
+        font-size: 20px;
+      }
+    }
+
+    .recipe-title {
+      font-size: 26px;
+    }
+
+    .recipe-meta .cooking-time {
+      font-size: 18px;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .view-btn {
+      width: 100px;
+      height: 54px;
+      font-size: 20px;
+    }
+  }
+
+  .generate-new .generate-new-btn {
+    font-size: 18px;
+  }
+}
+
+// === 375px ===
+@media (max-width: 375px) {
+  .recipe-results-container {
+    padding: 24px 12px;
+  }
+
+  .recipes-overview {
+    margin-top: 80px;
+  }
+
+  .header {
+    margin-bottom: 32px;
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      margin-top: 16px;
+    }
+
+    .tags {
+      gap: 8px;
+
+      .tag {
+        font-size: 14px;
+        padding: 4px 12px;
+      }
+    }
+  }
+
+  .mobile-logo {
+    margin-bottom: 16px;
+  }
+
+  .logo img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .recipe-cards {
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .recipe-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+
+    .card-header {
+      margin-bottom: 16px;
+
+      .recipe-icon {
+        width: 28px;
+        height: 20px;
+      }
+
+      .recipe-number {
+        font-size: 18px;
+      }
+    }
+
+    .recipe-title {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .recipe-meta {
+      margin-bottom: 20px;
+
+      .cooking-time {
+        font-size: 16px;
+
+        .icon {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    .view-btn {
+      width: 90px;
+      height: 48px;
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+  }
+
+  .generate-new .generate-new-btn {
+    font-size: 16px;
+    padding: 12px 16px;
   }
 }
